@@ -8,7 +8,6 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
 body{background:#f4f8f4}
 header{background:#0b5e2e;color:#fff;padding:15px 20px;text-align:center}
-header a{color:#ffc107;text-decoration:none;font-weight:bold}
 .hero{background: linear-gradient(to bottom, rgba(0,0,0,0) 55%, rgba(0,0,0,0.85) 100%), url('https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg');background-size:contain;background-repeat:no-repeat;background-position:center top;background-color:#0a7ae4;color:#fff;text-align:center;padding:20px 20px 30px 20px;min-height:680px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;}
 .hero-text{background:rgba(0,0,0,0.45);padding:18px 15px;border-radius:15px;width:100%;max-width:600px}
 .hero h1{font-size:34px;line-height:1.4;text-shadow:2px 2px 8px #000}
@@ -21,7 +20,7 @@ h2{text-align:center;color:#0b5e2e;margin-bottom:15px}
 .notice{background:#fff3cd;border:1px solid #ffc107;padding:20px;border-radius:12px;text-align:center;margin-top:20px}
 .notice-board{background:#fff;padding:20px;border-radius:15px;margin-top:25px;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
 .notice-item{background:#f8f9fa;border-left:5px solid #0b5e2e;padding:12px;margin:10px 0;border-radius:8px;text-align:left}
-.members-btn{background:#0b5e2e;color:#fff;padding:18px 25px;border-radius:15px;text-align:center;display:block;text-decoration:none;font-size:20px;font-weight:bold;margin-top:25px;box-shadow:0 2px 10px rgba(0,0,0,0.15);cursor:pointer;border:none;width:100%}
+.members-btn{background:#0b5e2e;color:#fff;padding:18px 25px;border-radius:15px;text-align:center;display:block;font-size:20px;font-weight:bold;margin-top:25px;box-shadow:0 2px 10px rgba(0,0,0,0.15);cursor:pointer;border:none;width:100%}
 .members-btn span{display:block;font-size:14px;font-weight:normal;margin-top:5px;opacity:0.9}
 .members{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin-top:15px}
 .member{background:#fff;padding:15px;border-radius:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-top:4px solid #0b5e2e;cursor:pointer}
@@ -52,7 +51,6 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <body>
 <header>আনসার ভিডিপি ক্লাব পল্টন, ঢাকা</header>
 
-<!-- ============ HOME PAGE ============ -->
 <div id="homePage">
 <div class="hero"><div class="hero-text"><h1>আনসার ভিডিপি ক্লাব<br>পল্টন, ঢাকা</h1><p>শান্তি শৃঙ্খলা উন্নয়ন নিরাপত্তায় সর্বত্র আমরা</p></div></div>
 <div class="box">
@@ -68,7 +66,6 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 </div>
 </div>
 
-<!-- ============ SODOSSO PAGE ============ -->
 <div id="membersPage" style="display:none;">
 <div class="box" style="padding-top:20px;">
 <h2>👥 আমাদের সদস্যবৃন্দ (৫০ জন)</h2><p style="text-align:center;color:#666;margin-bottom:15px;">যেকোনো সদস্যের কার্ডে ক্লিক করলে তার ফুল প্রোফাইল খুলবে</p>
@@ -80,7 +77,6 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 
 <footer>© 2026 আনসার ভিডিপি ক্লাব পল্টন, ঢাকা - মোঃ রুহুল আমিন</footer>
 
-<!-- ============ PROFILE POPUP ============ -->
 <div class="modal" id="profileModal" onclick="if(event.target==this) closeModal()">
 <div class="modal-content"><span class="close" onclick="closeModal()">×</span><img id="mImg" src=""><h2 id="mName" style="margin-top:10px;"></h2><div class="badge" id="mPost"></div><div class="grid2"><div>📅 <b>এই মাসে ডিউটি</b><br><span id="mDuty"></span></div><div>💰 <b>ভাতা পেয়েছি</b><br><span id="mVata"></span></div><div>❤️ <b>ক্লাবে অনুদান</b><br><span id="mOnudan"></span></div><div>⏳ <b>আরো ভাতা পাবো</b><br><span id="mPabo"></span></div><div>📊 <b>বাৎসরিক আয়</b><br><span id="mYearAy"></span></div><div>🎁 <b>বাৎসরিক অনুদান</b><br><span id="mYearOnudan"></span></div></div><p style="margin-top:15px;color:#666;font-size:13px;">প্রোফাইল বন্ধ করতে × চাপ দিন</p></div>
 </div>
@@ -88,9 +84,61 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <script>
 function showMembers(){ document.getElementById('homePage').style.display='none'; document.getElementById('membersPage').style.display='block'; window.scrollTo(0,0); }
 function showHome(){ document.getElementById('membersPage').style.display='none'; document.getElementById('homePage').style.display='block'; window.scrollTo(0,0); }
-var membersData = [];
-membersData.push({name:"মোঃ রুহুল আমিন",post:"ওয়ার্ড দলনেতা",img:"https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg",duty:"১২ দিন",vata:"৩,৬৬৫ টাকা",onudan:"১,২২০ টাকা",pabo:"৫,০০০ টাকা",yearAy:"--- টাকা",yearOnudan:"--- টাকা"});
-for(var i=2;i<=50;i++){ membersData.push({name:"সদস্যের নাম "+i,post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"}); }
+
+// ======= এখান থেকে ৫০ জনের তথ্য বসাবেন =======
+var membersData = [
+{name:"মোঃ রুহুল আমিন",post:"ওয়ার্ড দলনেতা",img:"https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg",duty:"১২ দিন",vata:"৩,৬৬৫ টাকা",onudan:"১,২২০ টাকা",pabo:"৫,০০০ টাকা",yearAy:"--- টাকা",yearOnudan:"--- টাকা"},
+{name:"সদস্যের নাম ২",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৫",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৬",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৭",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৮",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৯",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ১০",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ১১",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ১২",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ১৩",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ১৪",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ১৫",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ১৬",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ১৭",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ১৮",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ১৯",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২০",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২১",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২২",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৩",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৪",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৫",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৬",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৭",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৮",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৯",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩০",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩১",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩২",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৩",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৪",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৫",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৬",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৭",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৮",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৯",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪০",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪১",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪২",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৩",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৪",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৫",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৬",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৭",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৮",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৯",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৫০",post:"পদবী",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"}
+];
+// ======= এখানে শেষ =======
 var html="";
 for(var j=0;j<membersData.length;j++){ var m=membersData[j]; html+='<div class="member"><img src="'+m.img+'" onclick="openProfile('+j+')"><h3 style="margin-top:8px;" onclick="openProfile('+j+')">'+m.name+'</h3><p style="color:#0b5e2e;font-weight:bold;">'+m.post+'</p><div class="member-info">📅 <b>এই মাসে ডিউটি:</b> '+m.duty+'<br>💰 <b>ভাতা পেয়েছি:</b> '+m.vata+'<div class="more-info">❤️ <b>ক্লাবে অনুদান:</b> '+m.onudan+'<br>⏳ <b>আরো ভাতা পাবো:</b> '+m.pabo+'<br>📊 <b>বাৎসরিক আয়:</b> '+m.yearAy+'<br>🎁 <b>বাৎসরিক অনুদান:</b> '+m.yearOnudan+'</div></div><button class="see-btn" onclick="toggleMore(this)">🔽 See More</button><button class="profile-btn" onclick="openProfile('+j+')">👤 ফুল প্রোফাইল দেখুন</button></div>'; }
 document.getElementById('members').innerHTML=html;
