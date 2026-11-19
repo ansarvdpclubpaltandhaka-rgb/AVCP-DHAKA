@@ -1,0 +1,625 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- GLOBAL HELPERS ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidTimestamp(ts) {
+      return ts is timestamp && ts <= request.time;
+    }
+
+    function defaultOrgId() {
+      return 'ansar_vdp_paltan_dhaka';
+    }
+
+    function isSuperAdmin() {
+      return isSignedIn() && (
+        request.auth.uid == 'GpfMc9GLItN0NRDoeHW9OnCPNre2' ||
+        ('email' in request.auth.token &&
+         request.auth.token.email is string &&
+         request.auth.token.email.lower() == 'ansarvdpclubpaltandhaka@gmail.com')
+      );
+    }
+
+    function userDocExists() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function userDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isAdminOrSuperAdmin() {
+      return isSuperAdmin() || (
+        isSignedIn() &&
+        userDocExists() &&
+        userDoc().status == 'active' &&
+        (userDoc().role == 'admin' || userDoc().role == 'super_admin')
+      );
+    }
+
+    function hasPermission(perm) {
+      return isSuperAdmin() || (
+        isSignedIn() &&
+        userDocExists() &&
+        userDoc().status == 'active' &&
+        (userDoc().role == 'super_admin' ||
+          (userDoc().role == 'admin' && perm in userDoc().permissions))
+      );
+    }
+
+    // --- VALIDATION HELPERS ---
+
+    function isValidOrganization(data) {
+      return data.name is string && data.name.size() >= 1 && data.name.size() <= 160 &&
+        data.tagline is string && data.tagline.size() >= 1 && data.tagline.size() <= 200 &&
+        data.clubName is string && data.clubName.size() >= 1 && data.clubName.size() <= 160 &&
+        (!('address' in data) || (data.address is string && data.address.size() <= 300)) &&
+        (!('phone' in data) || (data.phone is string && data.phone.size() <= 40)) &&
+        (!('email' in data) || (data.email is string && data.email.size() <= 120)) &&
+        data.imageUploadProvider in ['none', 'cloudinary', 'custom'] &&
+        (!('cloudinaryCloudName' in data) || (data.cloudinaryCloudName is string && data.cloudinaryCloudName.size() <= 120)) &&
+        (!('cloudinaryUploadPreset' in data) || (data.cloudinaryUploadPreset is string && data.cloudinaryUploadPreset.size() <= 120)) &&
+        (!('customUploadUrl' in data) || (data.customUploadUrl is string && data.customUploadUrl.size() <= 500)) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidUserProfile(data) {
+      return data.uid is string && data.uid.size() >= 1 && data.uid.size() <= 128 &&
+        data.name is string && data.name.size() >= 1 && data.name.size() <= 120 &&
+        data.email is string && data.email.size() >= 3 && data.email.size() <= 160 &&
+        data.phone is string && data.phone.size() <= 40 &&
+        (!('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 1000)) &&
+        data.organizationId == defaultOrgId() &&
+        data.role in ['member', 'admin', 'super_admin'] &&
+        data.permissions is list && data.permissions.size() <= 20 &&
+        (data.permissions.size() == 0 || data.permissions[0] is string) &&
+        data.status in ['active', 'inactive'] &&
+        (!('bloodGroup' in data) || (data.bloodGroup is string && data.bloodGroup.size() <= 10)) &&
+        (!('positionTitle' in data) || (data.positionTitle is string && data.positionTitle.size() <= 120)) &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidDirectoryEntry(data) {
+      return (!('linkedUid' in data) || (data.linkedUid is string && data.linkedUid.size() <= 128)) &&
+        data.organizationId == defaultOrgId() &&
+        data.name is string && data.name.size() >= 1 && data.name.size() <= 120 &&
+        (!('photoUrl' in data) || (data.photoUrl is string && data.photoUrl.size() <= 1000)) &&
+        (!('bloodGroup' in data) || (data.bloodGroup is string && data.bloodGroup.size() <= 10)) &&
+        (!('position' in data) || (data.position is string && data.position.size() <= 120)) &&
+        (!('joiningDate' in data) || (data.joiningDate is string && data.joiningDate.size() <= 40)) &&
+        data.status in ['active', 'inactive'] &&
+        data.volunteer is bool &&
+        (!('skills' in data) || (data.skills is string && data.skills.size() <= 300)) &&
+        (!('availability' in data) || (data.availability is string && data.availability.size() <= 100)) &&
+        data.bloodDonor is bool &&
+        data.donorAvailable is bool &&
+        data.donationCount is int && data.donationCount >= 0 && data.donationCount <= 500 &&
+        (!('lastDonation' in data) || (data.lastDonation is string && data.lastDonation.size() <= 40)) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidMember(data) {
+      return data.organizationId == defaultOrgId() &&
+        (!('linkedUid' in data) || (data.linkedUid is string && data.linkedUid.size() <= 128)) &&
+        data.name is string && data.name.size() >= 1 && data.name.size() <= 120 &&
+        (!('photoUrl' in data) || (data.photoUrl is string && data.photoUrl.size() <= 1000)) &&
+        data.phone is string && data.phone.size() <= 40 &&
+        (!('email' in data) || (data.email is string && data.email.size() <= 160)) &&
+        data.bloodGroup is string && data.bloodGroup.size() <= 10 &&
+        data.position is string && data.position.size() <= 120 &&
+        (!('joiningDate' in data) || (data.joiningDate is string && data.joiningDate.size() <= 40)) &&
+        (!('address' in data) || (data.address is string && data.address.size() <= 300)) &&
+        data.status in ['active', 'inactive'] &&
+        (!('bloodDonor' in data) || data.bloodDonor is bool) &&
+        (!('donorAvailable' in data) || data.donorAvailable is bool) &&
+        (!('donationCount' in data) || (data.donationCount is int && data.donationCount >= 0)) &&
+        (!('lastDonation' in data) || (data.lastDonation is string && data.lastDonation.size() <= 40)) &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidVolunteer(data) {
+      return data.organizationId == defaultOrgId() &&
+        (!('linkedUid' in data) || (data.linkedUid is string && data.linkedUid.size() <= 128)) &&
+        data.name is string && data.name.size() >= 1 && data.name.size() <= 120 &&
+        (!('photoUrl' in data) || (data.photoUrl is string && data.photoUrl.size() <= 1000)) &&
+        data.phone is string && data.phone.size() <= 40 &&
+        data.skills is string && data.skills.size() <= 300 &&
+        data.availability is string && data.availability.size() <= 120 &&
+        (!('bloodGroup' in data) || (data.bloodGroup is string && data.bloodGroup.size() <= 10)) &&
+        (!('joiningDate' in data) || (data.joiningDate is string && data.joiningDate.size() <= 40)) &&
+        data.status in ['active', 'inactive'] &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidPosition(data) {
+      return data.organizationId == defaultOrgId() &&
+        data.title is string && data.title.size() >= 1 && data.title.size() <= 120 &&
+        data.rankOrder is int && data.rankOrder >= 0 && data.rankOrder <= 1000 &&
+        (!('holderName' in data) || (data.holderName is string && data.holderName.size() <= 120)) &&
+        (!('holderPhotoUrl' in data) || (data.holderPhotoUrl is string && data.holderPhotoUrl.size() <= 1000)) &&
+        (!('description' in data) || (data.description is string && data.description.size() <= 400)) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidServiceCategory(data) {
+      return data.organizationId == defaultOrgId() &&
+        data.title is string && data.title.size() >= 1 && data.title.size() <= 120 &&
+        data.description is string && data.description.size() <= 500 &&
+        data.iconKey is string && data.iconKey.size() <= 60 &&
+        data.active is bool &&
+        data.sortOrder is int && data.sortOrder >= 0 && data.sortOrder <= 1000 &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidServiceRequest(data) {
+      return data.organizationId == defaultOrgId() &&
+        data.userId is string && data.userId.size() >= 1 && data.userId.size() <= 128 &&
+        data.requesterName is string && data.requesterName.size() >= 1 && data.requesterName.size() <= 120 &&
+        (!('serviceId' in data) || (data.serviceId is string && data.serviceId.size() <= 128)) &&
+        data.serviceTitle is string && data.serviceTitle.size() >= 1 && data.serviceTitle.size() <= 120 &&
+        data.details is string && data.details.size() >= 1 && data.details.size() <= 2000 &&
+        (!('location' in data) || (data.location is string && data.location.size() <= 250)) &&
+        (!('contactPhone' in data) || (data.contactPhone is string && data.contactPhone.size() <= 40)) &&
+        data.urgency in ['normal', 'high', 'emergency'] &&
+        data.status in ['pending', 'approved', 'in_progress', 'completed', 'cancelled'] &&
+        (!('adminNote' in data) || (data.adminNote is string && data.adminNote.size() <= 500)) &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidMedicalCase(data) {
+      return data.organizationId == defaultOrgId() &&
+        data.userId is string && data.userId.size() >= 1 && data.userId.size() <= 128 &&
+        data.patientName is string && data.patientName.size() >= 1 && data.patientName.size() <= 120 &&
+        data.conditionSummary is string && data.conditionSummary.size() >= 1 && data.conditionSummary.size() <= 1500 &&
+        (!('hospitalName' in data) || (data.hospitalName is string && data.hospitalName.size() <= 200)) &&
+        (!('estimatedCost' in data) || (data.estimatedCost is number && data.estimatedCost >= 0)) &&
+        (!('contactPhone' in data) || (data.contactPhone is string && data.contactPhone.size() <= 40)) &&
+        data.status in ['pending', 'verified', 'assisted', 'closed'] &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidBloodRequest(data) {
+      return data.organizationId == defaultOrgId() &&
+        data.createdByUid is string && data.createdByUid.size() >= 1 && data.createdByUid.size() <= 128 &&
+        data.patientName is string && data.patientName.size() >= 1 && data.patientName.size() <= 120 &&
+        data.bloodGroup is string && data.bloodGroup.size() >= 1 && data.bloodGroup.size() <= 10 &&
+        data.hospital is string && data.hospital.size() >= 1 && data.hospital.size() <= 200 &&
+        data.location is string && data.location.size() >= 1 && data.location.size() <= 250 &&
+        data.requiredDate is string && data.requiredDate.size() >= 1 && data.requiredDate.size() <= 60 &&
+        data.units is int && data.units >= 1 && data.units <= 20 &&
+        data.contact is string && data.contact.size() <= 40 &&
+        data.urgency in ['normal', 'urgent', 'critical'] &&
+        data.status in ['open', 'matched', 'fulfilled', 'cancelled'] &&
+        (!('notes' in data) || (data.notes is string && data.notes.size() <= 600)) &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidActivity(data) {
+      return data.organizationId == defaultOrgId() &&
+        data.title is string && data.title.size() >= 1 && data.title.size() <= 160 &&
+        data.description is string && data.description.size() >= 1 && data.description.size() <= 3000 &&
+        data.category is string && data.category.size() >= 1 && data.category.size() <= 120 &&
+        (!('imageUrl' in data) || (data.imageUrl is string && data.imageUrl.size() <= 1000)) &&
+        data.date is string && data.date.size() >= 1 && data.date.size() <= 60 &&
+        data.location is string && data.location.size() >= 1 && data.location.size() <= 200 &&
+        data.participants is int && data.participants >= 0 && data.participants <= 100000 &&
+        data.beneficiaries is int && data.beneficiaries >= 0 && data.beneficiaries <= 1000000 &&
+        data.budget is number && data.budget >= 0 &&
+        data.status in ['ongoing', 'completed'] &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidContribution(data) {
+      return data.organizationId == defaultOrgId() &&
+        (!('memberUid' in data) || (data.memberUid is string && data.memberUid.size() <= 128)) &&
+        data.memberName is string && data.memberName.size() >= 1 && data.memberName.size() <= 120 &&
+        data.expectedAmount is number && data.expectedAmount >= 0 &&
+        data.paidAmount is number && data.paidAmount >= 0 &&
+        data.dueAmount is number && data.dueAmount >= 0 &&
+        data.month is string && data.month.size() >= 1 && data.month.size() <= 40 &&
+        data.paymentDate is string && data.paymentDate.size() <= 40 &&
+        data.paymentMethod is string && data.paymentMethod.size() <= 60 &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidDonation(data) {
+      return data.organizationId == defaultOrgId() &&
+        data.donorName is string && data.donorName.size() >= 1 && data.donorName.size() <= 120 &&
+        data.amount is number && data.amount > 0 &&
+        data.purpose is string && data.purpose.size() >= 1 && data.purpose.size() <= 250 &&
+        data.donationDate is string && data.donationDate.size() >= 1 && data.donationDate.size() <= 40 &&
+        data.paymentMethod is string && data.paymentMethod.size() <= 60 &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidExpense(data) {
+      return data.organizationId == defaultOrgId() &&
+        data.title is string && data.title.size() >= 1 && data.title.size() <= 160 &&
+        data.category is string && data.category.size() >= 1 && data.category.size() <= 100 &&
+        data.amount is number && data.amount > 0 &&
+        data.expenseDate is string && data.expenseDate.size() >= 1 && data.expenseDate.size() <= 40 &&
+        (!('notes' in data) || (data.notes is string && data.notes.size() <= 600)) &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidNotice(data) {
+      return data.organizationId == defaultOrgId() &&
+        data.title is string && data.title.size() >= 1 && data.title.size() <= 180 &&
+        data.body is string && data.body.size() >= 1 && data.body.size() <= 4000 &&
+        data.noticeType in ['notice', 'announcement', 'activity_update'] &&
+        data.pinned is bool &&
+        data.createdByUid is string && data.createdByUid.size() >= 1 && data.createdByUid.size() <= 128 &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidEvent(data) {
+      return data.organizationId == defaultOrgId() &&
+        data.title is string && data.title.size() >= 1 && data.title.size() <= 180 &&
+        data.description is string && data.description.size() >= 1 && data.description.size() <= 2000 &&
+        data.eventType in ['meeting', 'event'] &&
+        data.eventDate is string && data.eventDate.size() >= 1 && data.eventDate.size() <= 40 &&
+        (!('eventTime' in data) || (data.eventTime is string && data.eventTime.size() <= 40)) &&
+        data.location is string && data.location.size() >= 1 && data.location.size() <= 200 &&
+        data.createdByUid is string && data.createdByUid.size() >= 1 && data.createdByUid.size() <= 128 &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidConversation(data) {
+      return data.organizationId == defaultOrgId() &&
+        data.participantIds is list && data.participantIds.size() == 2 &&
+        data.participantIds[0] is string && data.participantIds[1] is string &&
+        data.participantIds[0] != data.participantIds[1] &&
+        data.participantNames is map &&
+        (!('participantPhotos' in data) || data.participantPhotos is map) &&
+        data.lastMessageText is string && data.lastMessageText.size() <= 1000 &&
+        data.lastSenderId is string && data.lastSenderId.size() <= 128 &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidMessage(data) {
+      return data.senderId is string && data.senderId.size() >= 1 && data.senderId.size() <= 128 &&
+        data.participantIds is list && data.participantIds.size() == 2 &&
+        data.participantIds[0] is string && data.participantIds[1] is string &&
+        (!('text' in data) || (data.text is string && data.text.size() <= 2000)) &&
+        (!('imageUrl' in data) || (data.imageUrl is string && data.imageUrl.size() <= 1000)) &&
+        (('text' in data && data.text.size() > 0) || ('imageUrl' in data && data.imageUrl.size() > 0)) &&
+        data.seen is bool &&
+        (!('seenAt' in data) || isValidTimestamp(data.seenAt)) &&
+        isValidTimestamp(data.createdAt);
+    }
+
+    function isValidNotification(data) {
+      return data.organizationId == defaultOrgId() &&
+        data.targetScope in ['all', 'user'] &&
+        (!('targetUserId' in data) || (data.targetUserId is string && data.targetUserId.size() <= 128)) &&
+        data.senderUid is string && data.senderUid.size() >= 1 && data.senderUid.size() <= 128 &&
+        data.category in ['message', 'blood_request', 'notice', 'event', 'service_update', 'payment_update', 'announcement'] &&
+        data.title is string && data.title.size() >= 1 && data.title.size() <= 180 &&
+        data.body is string && data.body.size() >= 1 && data.body.size() <= 1000 &&
+        data.readBy is list && data.readBy.size() <= 500 &&
+        isValidTimestamp(data.createdAt);
+    }
+
+    // --- COLLECTION RULES ---
+
+    match /organizations/{orgId} {
+      allow get: if isSignedIn() && isValidId(orgId);
+      allow list: if false;
+      allow create, update: if isSignedIn() && isValidId(orgId) &&
+        hasPermission('manage_settings') &&
+        isValidOrganization(incoming());
+      allow delete: if false;
+    }
+
+    match /users/{uid} {
+      allow get: if isSignedIn() && isValidId(uid) && (request.auth.uid == uid || isAdminOrSuperAdmin());
+      allow list: if isAdminOrSuperAdmin();
+      allow create: if isSignedIn() && isValidId(uid) &&
+        request.auth.uid == uid &&
+        incoming().uid == request.auth.uid &&
+        isValidUserProfile(incoming()) &&
+        (
+          (isSuperAdmin() && incoming().role == 'super_admin') ||
+          (!isSuperAdmin() && incoming().role == 'member' && incoming().permissions.size() == 0)
+        );
+      allow update: if isSignedIn() && isValidId(uid) &&
+        isValidUserProfile(incoming()) &&
+        incoming().uid == existing().uid &&
+        incoming().createdAt == existing().createdAt &&
+        (
+          (
+            request.auth.uid == uid &&
+            incoming().role == existing().role &&
+            incoming().permissions == existing().permissions &&
+            incoming().organizationId == existing().organizationId &&
+            incoming().status == existing().status &&
+            incoming().diff(existing()).affectedKeys().hasOnly(['name', 'phone', 'photoURL', 'bloodGroup', 'updatedAt'])
+          ) ||
+          (
+            isSuperAdmin() &&
+            incoming().organizationId == existing().organizationId &&
+            incoming().diff(existing()).affectedKeys().hasOnly(['role', 'permissions', 'status', 'positionTitle', 'updatedAt'])
+          )
+        );
+      allow delete: if false;
+    }
+
+    match /memberDirectory/{entryId} {
+      allow get: if isSignedIn() && isValidId(entryId) && resource.data.organizationId == defaultOrgId();
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId();
+      allow create: if isSignedIn() && isValidId(entryId) &&
+        isValidDirectoryEntry(incoming()) &&
+        (entryId == request.auth.uid || hasPermission('manage_members'));
+      allow update: if isSignedIn() && isValidId(entryId) &&
+        isValidDirectoryEntry(incoming()) &&
+        incoming().organizationId == existing().organizationId &&
+        (
+          hasPermission('manage_members') ||
+          (entryId == request.auth.uid && incoming().linkedUid == request.auth.uid &&
+           incoming().diff(existing()).affectedKeys().hasOnly(['name', 'photoUrl', 'bloodGroup', 'bloodDonor', 'donorAvailable', 'donationCount', 'lastDonation', 'volunteer', 'skills', 'availability', 'updatedAt']))
+        );
+      allow delete: if hasPermission('manage_members') && isValidId(entryId);
+    }
+
+    match /positions/{positionId} {
+      allow get: if isSignedIn() && isValidId(positionId) && resource.data.organizationId == defaultOrgId();
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId();
+      allow create, update: if hasPermission('manage_members') && isValidId(positionId) && isValidPosition(incoming());
+      allow delete: if hasPermission('manage_members') && isValidId(positionId);
+    }
+
+    match /members/{memberId} {
+      allow get: if isSignedIn() && isValidId(memberId) && resource.data.organizationId == defaultOrgId() &&
+        (isAdminOrSuperAdmin() || resource.data.linkedUid == request.auth.uid);
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId() &&
+        (isAdminOrSuperAdmin() || resource.data.linkedUid == request.auth.uid);
+      allow create: if hasPermission('manage_members') && isValidId(memberId) && isValidMember(incoming());
+      allow update: if hasPermission('manage_members') && isValidId(memberId) &&
+        isValidMember(incoming()) && incoming().createdAt == existing().createdAt;
+      allow delete: if hasPermission('manage_members') && isValidId(memberId);
+    }
+
+    match /volunteers/{volunteerId} {
+      allow get: if isSignedIn() && isValidId(volunteerId) && resource.data.organizationId == defaultOrgId() &&
+        (isAdminOrSuperAdmin() || resource.data.linkedUid == request.auth.uid);
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId() &&
+        (isAdminOrSuperAdmin() || resource.data.linkedUid == request.auth.uid);
+      allow create: if hasPermission('manage_members') && isValidId(volunteerId) && isValidVolunteer(incoming());
+      allow update: if hasPermission('manage_members') && isValidId(volunteerId) &&
+        isValidVolunteer(incoming()) && incoming().createdAt == existing().createdAt;
+      allow delete: if hasPermission('manage_members') && isValidId(volunteerId);
+    }
+
+    match /services/{serviceId} {
+      allow get: if isSignedIn() && isValidId(serviceId) && resource.data.organizationId == defaultOrgId();
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId();
+      allow create: if hasPermission('manage_services') && isValidId(serviceId) && isValidServiceCategory(incoming());
+      allow update: if hasPermission('manage_services') && isValidId(serviceId) &&
+        isValidServiceCategory(incoming()) && incoming().createdAt == existing().createdAt;
+      allow delete: if hasPermission('manage_services') && isValidId(serviceId);
+    }
+
+    match /serviceRequests/{requestId} {
+      allow get: if isSignedIn() && isValidId(requestId) && resource.data.organizationId == defaultOrgId() &&
+        (resource.data.userId == request.auth.uid || isAdminOrSuperAdmin());
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId() &&
+        (resource.data.userId == request.auth.uid || isAdminOrSuperAdmin());
+      allow create: if isSignedIn() && isValidId(requestId) &&
+        isValidServiceRequest(incoming()) &&
+        incoming().userId == request.auth.uid &&
+        incoming().status == 'pending';
+      allow update: if isSignedIn() && isValidId(requestId) &&
+        isValidServiceRequest(incoming()) &&
+        incoming().userId == existing().userId &&
+        incoming().organizationId == existing().organizationId &&
+        incoming().createdAt == existing().createdAt &&
+        (
+          hasPermission('manage_requests') ||
+          (
+            existing().userId == request.auth.uid &&
+            existing().status == 'pending' &&
+            incoming().status == 'cancelled' &&
+            incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt'])
+          )
+        );
+      allow delete: if hasPermission('manage_requests') && isValidId(requestId);
+    }
+
+    match /medicalCases/{caseId} {
+      allow get: if isSignedIn() && isValidId(caseId) && resource.data.organizationId == defaultOrgId() &&
+        (resource.data.userId == request.auth.uid || isAdminOrSuperAdmin());
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId() &&
+        (resource.data.userId == request.auth.uid || isAdminOrSuperAdmin());
+      allow create: if isSignedIn() && isValidId(caseId) &&
+        isValidMedicalCase(incoming()) &&
+        incoming().userId == request.auth.uid &&
+        incoming().status == 'pending';
+      allow update: if hasPermission('manage_requests') && isValidId(caseId) &&
+        isValidMedicalCase(incoming()) &&
+        incoming().userId == existing().userId &&
+        incoming().createdAt == existing().createdAt;
+      allow delete: if hasPermission('manage_requests') && isValidId(caseId);
+    }
+
+    match /bloodRequests/{requestId} {
+      allow get: if isSignedIn() && isValidId(requestId) && resource.data.organizationId == defaultOrgId();
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId();
+      allow create: if isSignedIn() && isValidId(requestId) &&
+        isValidBloodRequest(incoming()) &&
+        incoming().createdByUid == request.auth.uid;
+      allow update: if isSignedIn() && isValidId(requestId) &&
+        isValidBloodRequest(incoming()) &&
+        incoming().createdByUid == existing().createdByUid &&
+        incoming().createdAt == existing().createdAt &&
+        (
+          hasPermission('manage_blood') ||
+          (
+            existing().createdByUid == request.auth.uid &&
+            existing().status != 'fulfilled' &&
+            incoming().diff(existing()).affectedKeys().hasOnly(['status', 'urgency', 'units', 'notes', 'updatedAt'])
+          )
+        );
+      allow delete: if isSignedIn() && isValidId(requestId) &&
+        (hasPermission('manage_blood') || resource.data.createdByUid == request.auth.uid);
+    }
+
+    match /activities/{activityId} {
+      allow get: if isSignedIn() && isValidId(activityId) && resource.data.organizationId == defaultOrgId();
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId();
+      allow create: if hasPermission('manage_activities') && isValidId(activityId) && isValidActivity(incoming());
+      allow update: if hasPermission('manage_activities') && isValidId(activityId) &&
+        isValidActivity(incoming()) && incoming().createdAt == existing().createdAt;
+      allow delete: if hasPermission('manage_activities') && isValidId(activityId);
+    }
+
+    match /contributions/{contributionId} {
+      allow get: if isSignedIn() && isValidId(contributionId) && resource.data.organizationId == defaultOrgId() &&
+        (isAdminOrSuperAdmin() || resource.data.memberUid == request.auth.uid);
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId() &&
+        (isAdminOrSuperAdmin() || resource.data.memberUid == request.auth.uid);
+      allow create: if hasPermission('manage_finance') && isValidId(contributionId) && isValidContribution(incoming());
+      allow update: if hasPermission('manage_finance') && isValidId(contributionId) &&
+        isValidContribution(incoming()) && incoming().createdAt == existing().createdAt;
+      allow delete: if hasPermission('manage_finance') && isValidId(contributionId);
+    }
+
+    match /donations/{donationId} {
+      allow get: if isSignedIn() && isValidId(donationId) && resource.data.organizationId == defaultOrgId() && isAdminOrSuperAdmin();
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId() && isAdminOrSuperAdmin();
+      allow create: if hasPermission('manage_finance') && isValidId(donationId) && isValidDonation(incoming());
+      allow update: if hasPermission('manage_finance') && isValidId(donationId) &&
+        isValidDonation(incoming()) && incoming().createdAt == existing().createdAt;
+      allow delete: if hasPermission('manage_finance') && isValidId(donationId);
+    }
+
+    match /expenses/{expenseId} {
+      allow get: if isSignedIn() && isValidId(expenseId) && resource.data.organizationId == defaultOrgId() && isAdminOrSuperAdmin();
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId() && isAdminOrSuperAdmin();
+      allow create: if hasPermission('manage_finance') && isValidId(expenseId) && isValidExpense(incoming());
+      allow update: if hasPermission('manage_finance') && isValidId(expenseId) &&
+        isValidExpense(incoming()) && incoming().createdAt == existing().createdAt;
+      allow delete: if hasPermission('manage_finance') && isValidId(expenseId);
+    }
+
+    match /allowances/{allowanceId} {
+      allow get: if isSignedIn() && isValidId(allowanceId) && resource.data.organizationId == defaultOrgId();
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId();
+      allow create, update: if hasPermission('manage_finance') && isValidId(allowanceId) &&
+        incoming().organizationId == defaultOrgId() &&
+        incoming().memberName is string && incoming().memberName.size() >= 1 && incoming().memberName.size() <= 120 &&
+        incoming().dailyAmount is int && incoming().dailyAmount >= 0 &&
+        incoming().monthlyTotal is int && incoming().monthlyTotal >= 0 &&
+        incoming().paid is bool;
+      allow delete: if hasPermission('manage_finance') && isValidId(allowanceId);
+    }
+
+    match /notices/{noticeId} {
+      allow get: if isSignedIn() && isValidId(noticeId) && resource.data.organizationId == defaultOrgId();
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId();
+      allow create: if hasPermission('manage_notices') && isValidId(noticeId) &&
+        isValidNotice(incoming()) && incoming().createdByUid == request.auth.uid;
+      allow update: if hasPermission('manage_notices') && isValidId(noticeId) &&
+        isValidNotice(incoming()) && incoming().createdAt == existing().createdAt;
+      allow delete: if hasPermission('manage_notices') && isValidId(noticeId);
+    }
+
+    match /events/{eventId} {
+      allow get: if isSignedIn() && isValidId(eventId) && resource.data.organizationId == defaultOrgId();
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId();
+      allow create: if hasPermission('manage_notices') && isValidId(eventId) &&
+        isValidEvent(incoming()) && incoming().createdByUid == request.auth.uid;
+      allow update: if hasPermission('manage_notices') && isValidId(eventId) &&
+        isValidEvent(incoming()) && incoming().createdAt == existing().createdAt;
+      allow delete: if hasPermission('manage_notices') && isValidId(eventId);
+    }
+
+    match /conversations/{conversationId} {
+      allow get: if isSignedIn() && isValidId(conversationId) &&
+        request.auth.uid in resource.data.participantIds;
+      allow list: if isSignedIn() &&
+        request.auth.uid in resource.data.participantIds;
+      allow create: if isSignedIn() && isValidId(conversationId) &&
+        isValidConversation(incoming()) &&
+        request.auth.uid in incoming().participantIds;
+      allow update: if isSignedIn() && isValidId(conversationId) &&
+        request.auth.uid in existing().participantIds &&
+        isValidConversation(incoming()) &&
+        incoming().participantIds == existing().participantIds;
+      allow delete: if false;
+
+      match /messages/{messageId} {
+        allow get: if isSignedIn() && isValidId(conversationId) && isValidId(messageId) &&
+          request.auth.uid in resource.data.participantIds;
+        allow list: if isSignedIn() &&
+          request.auth.uid in resource.data.participantIds;
+        allow create: if isSignedIn() && isValidId(conversationId) && isValidId(messageId) &&
+          isValidMessage(incoming()) &&
+          incoming().senderId == request.auth.uid &&
+          request.auth.uid in incoming().participantIds;
+        allow update: if isSignedIn() && isValidId(conversationId) && isValidId(messageId) &&
+          request.auth.uid in existing().participantIds &&
+          isValidMessage(incoming()) &&
+          incoming().senderId == existing().senderId &&
+          incoming().participantIds == existing().participantIds &&
+          incoming().createdAt == existing().createdAt &&
+          incoming().diff(existing()).affectedKeys().hasOnly(['seen', 'seenAt']);
+        allow delete: if false;
+      }
+    }
+
+    match /notifications/{notificationId} {
+      allow get: if isSignedIn() && isValidId(notificationId) && resource.data.organizationId == defaultOrgId() &&
+        (resource.data.targetScope == 'all' || resource.data.targetUserId == request.auth.uid);
+      allow list: if isSignedIn() && resource.data.organizationId == defaultOrgId() &&
+        (resource.data.targetScope == 'all' || resource.data.targetUserId == request.auth.uid);
+      allow create: if isSignedIn() && isValidId(notificationId) &&
+        isValidNotification(incoming()) &&
+        (isAdminOrSuperAdmin() || incoming().senderUid == request.auth.uid);
+      allow update: if isSignedIn() && isValidId(notificationId) &&
+        resource.data.organizationId == defaultOrgId() &&
+        isValidNotification(incoming()) &&
+        incoming().createdAt == existing().createdAt &&
+        (
+          isAdminOrSuperAdmin() ||
+          ((resource.data.targetScope == 'all' || resource.data.targetUserId == request.auth.uid) &&
+           incoming().diff(existing()).affectedKeys().hasOnly(['readBy']))
+        );
+      allow delete: if isSignedIn() && isValidId(notificationId) &&
+        (isAdminOrSuperAdmin() || resource.data.targetUserId == request.auth.uid);
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "আনসার ভিডিপি ক্লাব পল্টন ঢাকা",
+  "description": "বাংলাদেশ সেবামূলক সংগঠন — মানবতার জন্য নিবেদিত কমিউনিটি সেবা, রক্তদান, মানবিক কার্যক্রম ও সাংগঠনিক ব্যবস্থাপনা অ্যাপ।",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "64718624338",
+    "firebase_url": "https://ansar-vdp-clup-paltan-default-rtdb.firebaseio.com",
+    "project_id": "ansar-vdp-clup-paltan",
+    "storage_bucket": "ansar-vdp-clup-paltan.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64718624338:android:e65857460dde9af5be718b",
+        "android_client_info": {
+          "package_name": "Com.tdp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64718624338-98kr0hacmdq800p0f47pht3vu894roq7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMJnP0jWWK_gNNdVQZAy7CAUoLAPTCatY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64718624338-98kr0hacmdq800p0f47pht3vu894roq7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,435 @@
+{
+  "entities": {
+    "Organization": {
+      "title": "Organization",
+      "description": "Organization metadata and public image hosting configuration.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "tagline": { "type": "string" },
+        "clubName": { "type": "string" },
+        "address": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "imageUploadProvider": { "type": "string", "enum": ["none", "cloudinary", "custom"] },
+        "cloudinaryCloudName": { "type": "string" },
+        "cloudinaryUploadPreset": { "type": "string" },
+        "customUploadUrl": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "tagline", "clubName", "imageUploadProvider", "updatedAt"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated user account and RBAC role record.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "organizationId": { "type": "string" },
+        "role": { "type": "string", "enum": ["member", "admin", "super_admin"] },
+        "permissions": { "type": "array" },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "bloodGroup": { "type": "string" },
+        "positionTitle": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "phone", "organizationId", "role", "permissions", "status", "createdAt", "updatedAt"]
+    },
+    "DirectoryEntry": {
+      "title": "DirectoryEntry",
+      "description": "Non-PII organization member, volunteer, and blood donor directory card.",
+      "type": "object",
+      "properties": {
+        "linkedUid": { "type": "string" },
+        "organizationId": { "type": "string" },
+        "name": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "bloodGroup": { "type": "string" },
+        "position": { "type": "string" },
+        "joiningDate": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "volunteer": { "type": "boolean" },
+        "skills": { "type": "string" },
+        "availability": { "type": "string" },
+        "bloodDonor": { "type": "boolean" },
+        "donorAvailable": { "type": "boolean" },
+        "donationCount": { "type": "integer" },
+        "lastDonation": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "name", "status", "volunteer", "bloodDonor", "donorAvailable", "donationCount", "updatedAt"]
+    },
+    "Member": {
+      "title": "Member",
+      "description": "Admin-managed member profile including protected PII.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "linkedUid": { "type": "string" },
+        "name": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "bloodGroup": { "type": "string" },
+        "position": { "type": "string" },
+        "joiningDate": { "type": "string" },
+        "address": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "bloodDonor": { "type": "boolean" },
+        "donorAvailable": { "type": "boolean" },
+        "donationCount": { "type": "integer" },
+        "lastDonation": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "name", "phone", "bloodGroup", "position", "status", "createdAt", "updatedAt"]
+    },
+    "Volunteer": {
+      "title": "Volunteer",
+      "description": "Admin-managed volunteer profile including protected phone.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "linkedUid": { "type": "string" },
+        "name": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "phone": { "type": "string" },
+        "skills": { "type": "string" },
+        "availability": { "type": "string" },
+        "bloodGroup": { "type": "string" },
+        "joiningDate": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "name", "phone", "skills", "availability", "status", "createdAt", "updatedAt"]
+    },
+    "Position": {
+      "title": "Position",
+      "description": "Organizational designation or leadership position.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "title": { "type": "string" },
+        "rankOrder": { "type": "integer" },
+        "holderName": { "type": "string" },
+        "holderPhotoUrl": { "type": "string" },
+        "description": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "title", "rankOrder", "updatedAt"]
+    },
+    "ServiceCategory": {
+      "title": "ServiceCategory",
+      "description": "Humanitarian service category managed by Admins.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "iconKey": { "type": "string" },
+        "active": { "type": "boolean" },
+        "sortOrder": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "title", "description", "iconKey", "active", "sortOrder", "createdAt", "updatedAt"]
+    },
+    "ServiceRequest": {
+      "title": "ServiceRequest",
+      "description": "Protected member/beneficiary request for humanitarian service.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "userId": { "type": "string" },
+        "requesterName": { "type": "string" },
+        "serviceId": { "type": "string" },
+        "serviceTitle": { "type": "string" },
+        "details": { "type": "string" },
+        "location": { "type": "string" },
+        "contactPhone": { "type": "string" },
+        "urgency": { "type": "string", "enum": ["normal", "high", "emergency"] },
+        "status": { "type": "string", "enum": ["pending", "approved", "in_progress", "completed", "cancelled"] },
+        "adminNote": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "userId", "requesterName", "serviceTitle", "details", "urgency", "status", "createdAt", "updatedAt"]
+    },
+    "MedicalCase": {
+      "title": "MedicalCase",
+      "description": "Protected medical assistance case.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "userId": { "type": "string" },
+        "patientName": { "type": "string" },
+        "conditionSummary": { "type": "string" },
+        "hospitalName": { "type": "string" },
+        "estimatedCost": { "type": "number" },
+        "contactPhone": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "verified", "assisted", "closed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "userId", "patientName", "conditionSummary", "status", "createdAt", "updatedAt"]
+    },
+    "BloodRequest": {
+      "title": "BloodRequest",
+      "description": "Emergency or scheduled blood request.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "createdByUid": { "type": "string" },
+        "patientName": { "type": "string" },
+        "bloodGroup": { "type": "string" },
+        "hospital": { "type": "string" },
+        "location": { "type": "string" },
+        "requiredDate": { "type": "string" },
+        "units": { "type": "integer" },
+        "contact": { "type": "string" },
+        "urgency": { "type": "string", "enum": ["normal", "urgent", "critical"] },
+        "status": { "type": "string", "enum": ["open", "matched", "fulfilled", "cancelled"] },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "createdByUid", "patientName", "bloodGroup", "hospital", "location", "requiredDate", "units", "contact", "urgency", "status", "createdAt", "updatedAt"]
+    },
+    "Activity": {
+      "title": "Activity",
+      "description": "Humanitarian activity or field event record.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "date": { "type": "string" },
+        "location": { "type": "string" },
+        "participants": { "type": "integer" },
+        "beneficiaries": { "type": "integer" },
+        "budget": { "type": "number" },
+        "status": { "type": "string", "enum": ["ongoing", "completed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "title", "description", "category", "date", "location", "participants", "beneficiaries", "budget", "status", "createdAt", "updatedAt"]
+    },
+    "Contribution": {
+      "title": "Contribution",
+      "description": "Member monthly or periodic financial contribution.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "memberUid": { "type": "string" },
+        "memberName": { "type": "string" },
+        "expectedAmount": { "type": "number" },
+        "paidAmount": { "type": "number" },
+        "dueAmount": { "type": "number" },
+        "month": { "type": "string" },
+        "paymentDate": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "memberName", "expectedAmount", "paidAmount", "dueAmount", "month", "paymentDate", "paymentMethod", "createdAt", "updatedAt"]
+    },
+    "Donation": {
+      "title": "Donation",
+      "description": "External or internal humanitarian donation.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "donorName": { "type": "string" },
+        "amount": { "type": "number" },
+        "purpose": { "type": "string" },
+        "donationDate": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "donorName", "amount", "purpose", "donationDate", "paymentMethod", "createdAt", "updatedAt"]
+    },
+    "Expense": {
+      "title": "Expense",
+      "description": "Organization humanitarian or operational expense.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "amount": { "type": "number" },
+        "expenseDate": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "title", "category", "amount", "expenseDate", "createdAt", "updatedAt"]
+    },
+    "Notice": {
+      "title": "Notice",
+      "description": "Official notice, announcement, or activity update.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "title": { "type": "string" },
+        "body": { "type": "string" },
+        "noticeType": { "type": "string", "enum": ["notice", "announcement", "activity_update"] },
+        "pinned": { "type": "boolean" },
+        "createdByUid": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "title", "body", "noticeType", "pinned", "createdByUid", "createdAt", "updatedAt"]
+    },
+    "OrgEvent": {
+      "title": "OrgEvent",
+      "description": "Scheduled meeting or organizational event.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "eventType": { "type": "string", "enum": ["meeting", "event"] },
+        "eventDate": { "type": "string" },
+        "eventTime": { "type": "string" },
+        "location": { "type": "string" },
+        "createdByUid": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "title", "description", "eventType", "eventDate", "location", "createdByUid", "createdAt", "updatedAt"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "One-to-one private conversation thread.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "participantIds": { "type": "array" },
+        "participantNames": { "type": "object" },
+        "participantPhotos": { "type": "object" },
+        "lastMessageText": { "type": "string" },
+        "lastSenderId": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "participantIds", "participantNames", "lastMessageText", "lastSenderId", "updatedAt"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Private 1-to-1 message inside a conversation.",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string" },
+        "participantIds": { "type": "array" },
+        "text": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "seen": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["senderId", "participantIds", "seen", "createdAt"]
+    },
+    "NotificationItem": {
+      "title": "NotificationItem",
+      "description": "In-app notification for messages, blood requests, notices, events, payments, or service updates.",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "targetScope": { "type": "string", "enum": ["all", "user"] },
+        "targetUserId": { "type": "string" },
+        "senderUid": { "type": "string" },
+        "category": { "type": "string", "enum": ["message", "blood_request", "notice", "event", "service_update", "payment_update", "announcement"] },
+        "title": { "type": "string" },
+        "body": { "type": "string" },
+        "readBy": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizationId", "targetScope", "senderUid", "category", "title", "body", "readBy", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/organizations/{orgId}": {
+      "schema": { "$ref": "#/entities/Organization" },
+      "description": "Organization configuration and external image CDN settings."
+    },
+    "/users/{uid}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private user account profile with role and permissions."
+    },
+    "/memberDirectory/{entryId}": {
+      "schema": { "$ref": "#/entities/DirectoryEntry" },
+      "description": "Non-PII directory cards for members, volunteers, and blood donors."
+    },
+    "/positions/{positionId}": {
+      "schema": { "$ref": "#/entities/Position" },
+      "description": "Organizational designations and leadership list."
+    },
+    "/members/{memberId}": {
+      "schema": { "$ref": "#/entities/Member" },
+      "description": "Admin-managed member records with protected PII."
+    },
+    "/volunteers/{volunteerId}": {
+      "schema": { "$ref": "#/entities/Volunteer" },
+      "description": "Admin-managed volunteer records with protected phone."
+    },
+    "/services/{serviceId}": {
+      "schema": { "$ref": "#/entities/ServiceCategory" },
+      "description": "Humanitarian service categories."
+    },
+    "/serviceRequests/{requestId}": {
+      "schema": { "$ref": "#/entities/ServiceRequest" },
+      "description": "Protected member service requests."
+    },
+    "/medicalCases/{caseId}": {
+      "schema": { "$ref": "#/entities/MedicalCase" },
+      "description": "Protected medical assistance cases."
+    },
+    "/bloodRequests/{requestId}": {
+      "schema": { "$ref": "#/entities/BloodRequest" },
+      "description": "Blood donation requests."
+    },
+    "/activities/{activityId}": {
+      "schema": { "$ref": "#/entities/Activity" },
+      "description": "Completed and ongoing humanitarian activities."
+    },
+    "/contributions/{contributionId}": {
+      "schema": { "$ref": "#/entities/Contribution" },
+      "description": "Member financial contribution records."
+    },
+    "/donations/{donationId}": {
+      "schema": { "$ref": "#/entities/Donation" },
+      "description": "Donation income records."
+    },
+    "/expenses/{expenseId}": {
+      "schema": { "$ref": "#/entities/Expense" },
+      "description": "Organization expense records."
+    },
+    "/notices/{noticeId}": {
+      "schema": { "$ref": "#/entities/Notice" },
+      "description": "Organization notices and announcements."
+    },
+    "/events/{eventId}": {
+      "schema": { "$ref": "#/entities/OrgEvent" },
+      "description": "Organization meetings and events."
+    },
+    "/conversations/{conversationId}": {
+      "schema": { "$ref": "#/entities/Conversation" },
+      "description": "Private 1-to-1 conversation metadata."
+    },
+    "/conversations/{conversationId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Private 1-to-1 chat messages."
+    },
+    "/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/NotificationItem" },
+      "description": "In-app notifications."
+    }
+  }
+}
