@@ -45,6 +45,8 @@ h2{text-align:center;color:#0b5e2e;margin-bottom:15px}
 .social a{padding:13px 20px;border-radius:30px;text-decoration:none;font-weight:bold;color:#fff;font-size:16px}
 .call{background:#0b5e2e}.whatsapp{background:#25D366}.facebook{background:#1877F2}.youtube{background:#999;pointer-events:none;opacity:0.7}
 footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px}
+.login-input{width:100%;padding:12px;margin:8px 0;border:2px solid #ddd;border-radius:10px;font-size:16px;text-align:center}
+.login-btn{background:#0b5e2e;color:#fff;border:none;padding:13px;width:100%;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px}
 @media(max-width:600px){.hero{min-height:560px}.hero h1{font-size:28px}.social a{width:100%}}
 </style>
 </head>
@@ -77,8 +79,12 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 
 <footer>© 2026 আনসার ভিডিপি ক্লাব পল্টন, ঢাকা - মোঃ রুহুল আমিন</footer>
 
+<div class="modal" id="loginModal" onclick="if(event.target==this) closeLogin()">
+<div class="modal-content"><span class="close" onclick="closeLogin()">×</span><h2 id="loginName" style="margin-top:10px;"></h2><p style="color:#666;font-size:14px;margin:5px 0;">প্রোফাইল দেখতে ID ও Password দিন</p><input class="login-input" id="inputId" placeholder="আপনার ID দিন - যেমন: 01"><input class="login-input" id="inputPass" type="password" placeholder="Password দিন"><p id="loginError" style="color:red;font-size:14px;display:none;">❌ ভুল ID / Password!</p><button class="login-btn" onclick="checkLogin()">🔓 প্রোফাইল খুলুন</button><p style="margin-top:10px;color:#999;font-size:12px;">ID / Password ভুলে গেলে দলনেতার সাথে যোগাযোগ করুন</p></div>
+</div>
+
 <div class="modal" id="profileModal" onclick="if(event.target==this) closeModal()">
-<div class="modal-content"><span class="close" onclick="closeModal()">×</span><img id="mImg" src=""><h2 id="mName" style="margin-top:10px;"></h2><div class="badge" id="mPost"></div><div class="grid2"><div>📅 <b>এই মাসে ডিউটি</b><br><span id="mDuty"></span></div><div>💰 <b>ভাতা পেয়েছি</b><br><span id="mVata"></span></div><div>❤️ <b>ক্লাবে অনুদান</b><br><span id="mOnudan"></span></div><div>⏳ <b>আরো ভাতা পাবো</b><br><span id="mPabo"></span></div><div>📊 <b>বাৎসরিক আয়</b><br><span id="mYearAy"></span></div><div>🎁 <b>বাৎসরিক অনুদান</b><br><span id="mYearOnudan"></span></div></div><p style="margin-top:15px;color:#666;font-size:13px;">প্রোফাইল বন্ধ করতে × চাপ দিন</p></div>
+<div class="modal-content"><span class="close" onclick="closeModal()">×</span><img id="mImg" src=""><h2 id="mName" style="margin-top:10px;"></h2><div class="badge" id="mPost"></div><div class="grid2"><div>📅 <b>এই মাসে ডিউটি</b><br><span id="mDuty"></span></div><div>📅 <b>এই বছরে মোট ডিউটি</b><br><span id="mYearDuty"></span></div><div>💰 <b>ভাতা পেয়েছি</b><br><span id="mVata"></span></div><div>❤️ <b>ক্লাবে অনুদান</b><br><span id="mOnudan"></span></div><div>⏳ <b>আরো ভাতা পাবো</b><br><span id="mPabo"></span></div><div>📊 <b>বাৎসরিক আয়</b><br><span id="mYearAy"></span></div><div>🎁 <b>বাৎসরিক অনুদান</b><br><span id="mYearOnudan"></span></div></div><p style="margin-top:15px;color:#666;font-size:13px;">প্রোফাইল বন্ধ করতে × চাপ দিন</p></div>
 </div>
 
 <script>
@@ -86,64 +92,68 @@ function showMembers(){ document.getElementById('homePage').style.display='none'
 function showHome(){ document.getElementById('membersPage').style.display='none'; document.getElementById('homePage').style.display='block'; window.scrollTo(0,0); }
 
 // ======= এখান থেকে ৫০ জনের তথ্য বসাবেন =======
+// সবার Password একটাই: Paltan@2026 | ID আলাদা আলাদা: 01, 02, 03...
 var membersData = [
-{name:"মোঃ রুহুল আমিন",post:"ওয়ার্ড দলনেতা",img:"https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg",duty:"৩৫ দিন",vata:"৩,৬৬৫ টাকা",onudan:"১,২২০ টাকা",pabo:"৫,০০০ টাকা",yearAy:"৬৩৫৮০ টাকা",yearOnudan:"১৩৮৮০ টাকা"},
-{name:"করবী জাহান কনা",post:"ওয়ার্ড দলনেত্রী",img:"https://via.placeholder.com/150",duty:"২২ দিন",vata:"৫০০০ টাকা",onudan:"১২০০ টাকা",pabo:"৫০০০ টাকা",yearAy:"১৮৯৪০ টাকা",yearOnudan:"১২০০ টাকা"},
-{name:"সাইমুন ইসলাম",post:"টিডিপি মেম্বার",img:"https://i.ibb.co.com/wF50GrMj/Whats-App-Image-2026-11-20-at-2-33-38-AM.jpg",duty:"২২ দিন",vata:"৫০০০ টাকা",onudan:"১২০০ টাকা",pabo:"৫০০০ টাকা",yearAy:"১৮৯৪০ টাকা",yearOnudan:"১২০০ টাকা"},
-{name:"নাতাশা আক্তার",post:"টিডিপি মেম্বার",img:"https://i.ibb.co.com/031Ys9h/Whats-App-Image-2026-11-20-at-2-33-38-AM-1.jpg",duty:"২২ দিন",vata:"৫০০০ টাকা",onudan:"১২০০ টাকা",pabo:"৫০০০ টাকা",yearAy:"১৮৫৮০ টাকা",yearOnudan:"১২০০ টাকা"},
-{name:"সাকিবুল ইসলাম রোহান",post:"টিডিপি মেম্বার",img:"https://i.ibb.co.com/5gMBg72r/Whats-App-Image-2026-11-20-at-2-33-39-AM.jpg",duty:"২২ দিন",vata:"৫০০০ টাকা",onudan:"৫০০ টাকা",pabo:"৫০০০ টাকা",yearAy:"২৩৮৯০ টাকা",yearOnudan:"৫০০ টাকা"},
-{name:"মোঃ শাফওয়ান হাওলাদার",post:"টিডিপি মেম্বার",img:"https://i.ibb.co.com/rRYphSR8/Whats-App-Image-2026-11-20-at-2-33-39-AM-1.jpg",duty:"১৭ দিন",vata:"০০০ টাকা",onudan:"১২০০ টাকা",pabo:"০০০ টাকা",yearAy:"১৫৩৮০ টাকা",yearOnudan:"১২০০ টাকা"},
-{name:"মোঃ আব্দুল্লাহ নোমান",post:"টিডিপি মেম্বার",img:"https://i.ibb.co.com/JFxSQ42h/Whats-App-Image-2026-11-20-at-2-33-39-AM-2.jpg",duty:"১৭ দিন",vata:"০০০ টাকা",onudan:"১২০০ টাকা",pabo:"০০০ টাকা",yearAy:"১৫৩৮০ টাকা",yearOnudan:"১২০০ টাকা"},
-{name:"সদস্যের নাম ৮",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৯",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ১০",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ১১",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ১২",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ১৩",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ১৪",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ১৫",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ১৬",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ১৭",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ১৮",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ১৯",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ২০",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ২১",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ২২",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ২৩",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ২৪",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ২৫",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ২৬",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ২৭",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ২৮",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ২৯",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৩০",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৩১",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৩২",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৩৩",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৩৪",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৩৫",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৩৬",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৩৭",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৩৮",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৩৯",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৪০",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৪১",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৪২",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৪৩",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৪৪",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৪৫",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৪৬",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৪৭",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৪৮",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৪৯",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
-{name:"সদস্যের নাম ৫০",post:"টিডিপি মেম্বার",img:"https://via.placeholder.com/150",duty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"}
+{name:"মোঃ রুহুল আমিন",post:"ওয়ার্ড দলনেতা",id:"01",pass:"Paltan@2026",img:"https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg",duty:"১২ দিন",yearDuty:"--- দিন",vata:"৩,৬৬৫ টাকা",onudan:"১,২২০ টাকা",pabo:"৫,০০০ টাকা",yearAy:"--- টাকা",yearOnudan:"--- টাকা"},
+{name:"করবী জাহান কনা",post:"ওয়ার্ড দলনেত্রী",id:"02",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সাইমুন ইসলাম",post:"টিডিপি মেম্বার",id:"03",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"নাতাশা আক্তার",post:"টিডিপি মেম্বার",id:"04",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সাকিবুল ইসলাম রোহান",post:"টিডিপি মেম্বার",id:"05",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"মোঃ শাফওয়ান হাওলাদার",post:"টিডিপি মেম্বার",id:"06",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"মোঃ আব্দুল্লাহ নোমান",post:"টিডিপি মেম্বার",id:"07",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"আহম্মেদ দিদার সামির",post:"টিডিপি মেম্বার",id:"08",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"মোঃ নুরনবী",post:"টিডিপি মেম্বার",id:"09",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"মোঃ অপু রায়হান দিপু",post:"টিডিপি মেম্বার",id:"10",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সাকিবুল ইসলাম খান",post:"টিডিপি মেম্বার",id:"11",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"মোঃ ফাহাদ হোসাইন",post:"টিডিপি মেম্বার",id:"12",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"আমির হামযা তালুকদার",post:"টিডিপি মেম্বার",id:"13",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"ইয়াসমিন আক্তার মুক্তা",post:"টিডিপি মেম্বার",id:"14",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সাদিয়া আক্তার",post:"টিডিপি মেম্বার",id:"15",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"স্বপ্না আক্তার",post:"টিডিপি মেম্বার",id:"16",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"শান্তামনি",post:"টিডিপি মেম্বার",id:"17",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সুমি আক্তার",post:"টিডিপি মেম্বার",id:"18",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ১৯",post:"টিডিপি মেম্বার",id:"19",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২০",post:"টিডিপি মেম্বার",id:"20",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২১",post:"টিডিপি মেম্বার",id:"21",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২২",post:"টিডিপি মেম্বার",id:"22",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৩",post:"টিডিপি মেম্বার",id:"23",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৪",post:"টিডিপি মেম্বার",id:"24",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৫",post:"টিডিপি মেম্বার",id:"25",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৬",post:"টিডিপি মেম্বার",id:"26",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৭",post:"টিডিপি মেম্বার",id:"27",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৮",post:"টিডিপি মেম্বার",id:"28",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ২৯",post:"টিডিপি মেম্বার",id:"29",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩০",post:"টিডিপি মেম্বার",id:"30",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩১",post:"টিডিপি মেম্বার",id:"31",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩২",post:"টিডিপি মেম্বার",id:"32",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৩",post:"টিডিপি মেম্বার",id:"33",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৪",post:"টিডিপি মেম্বার",id:"34",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৫",post:"টিডিপি মেম্বার",id:"35",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৬",post:"টিডিপি মেম্বার",id:"36",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৭",post:"টিডিপি মেম্বার",id:"37",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৮",post:"টিডিপি মেম্বার",id:"38",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৩৯",post:"টিডিপি মেম্বার",id:"39",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪০",post:"টিডিপি মেম্বার",id:"40",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪১",post:"টিডিপি মেম্বার",id:"41",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪২",post:"টিডিপি মেম্বার",id:"42",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৩",post:"টিডিপি মেম্বার",id:"43",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৪",post:"টিডিপি মেম্বার",id:"44",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৫",post:"টিডিপি মেম্বার",id:"45",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৬",post:"টিডিপি মেম্বার",id:"46",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৭",post:"টিডিপি মেম্বার",id:"47",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৮",post:"টিডিপি মেম্বার",id:"48",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৪৯",post:"টিডিপি মেম্বার",id:"49",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
+{name:"সদস্যের নাম ৫০",post:"টিডিপি মেম্বার",id:"50",pass:"Paltan@2026",img:"https://via.placeholder.com/150",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"}
 ];
 // ======= এখানে শেষ =======
 var html="";
-for(var j=0;j<membersData.length;j++){ var m=membersData[j]; html+='<div class="member"><img src="'+m.img+'" onclick="openProfile('+j+')"><h3 style="margin-top:8px;" onclick="openProfile('+j+')">'+m.name+'</h3><p style="color:#0b5e2e;font-weight:bold;">'+m.post+'</p><div class="member-info">📅 <b>এই মাসে ডিউটি:</b> '+m.duty+'<br>💰 <b>ভাতা পেয়েছি:</b> '+m.vata+'<div class="more-info">❤️ <b>ক্লাবে অনুদান:</b> '+m.onudan+'<br>⏳ <b>আরো ভাতা পাবো:</b> '+m.pabo+'<br>📊 <b>বাৎসরিক আয়:</b> '+m.yearAy+'<br>🎁 <b>বাৎসরিক অনুদান:</b> '+m.yearOnudan+'</div></div><button class="see-btn" onclick="toggleMore(this)">🔽 See More</button><button class="profile-btn" onclick="openProfile('+j+')">👤 ফুল প্রোফাইল দেখুন</button></div>'; }
+var currentIndex = -1;
+for(var j=0;j<membersData.length;j++){ var m=membersData[j]; html+='<div class="member"><img src="'+m.img+'" onclick="openProfile('+j+')"><h3 style="margin-top:8px;" onclick="openProfile('+j+')">'+m.name+'</h3><p style="color:#0b5e2e;font-weight:bold;">'+m.post+'</p><div class="member-info">📅 <b>এই মাসে ডিউটি:</b> '+m.duty+'<br>📅 <b>এই বছরে মোট ডিউটি:</b> '+m.yearDuty+'<br>💰 <b>ভাতা পেয়েছি:</b> '+m.vata+'<div class="more-info">❤️ <b>ক্লাবে অনুদান:</b> '+m.onudan+'<br>⏳ <b>আরো ভাতা পাবো:</b> '+m.pabo+'<br>📊 <b>বাৎসরিক আয়:</b> '+m.yearAy+'<br>🎁 <b>বাৎসরিক অনুদান:</b> '+m.yearOnudan+'</div></div><button class="see-btn" onclick="toggleMore(this)">🔽 See More</button><button class="profile-btn" onclick="openProfile('+j+')">👤 ফুল প্রোফাইল দেখুন</button></div>'; }
 document.getElementById('members').innerHTML=html;
 function toggleMore(btn){ var more=btn.parentElement.querySelector('.more-info'); if(more.style.display==='block'){more.style.display='none';btn.innerHTML='🔽 See More';} else {more.style.display='block';btn.innerHTML='🔼 See Less';} }
-function openProfile(i){ var m=membersData[i]; document.getElementById('mImg').src=m.img; document.getElementById('mName').innerText=m.name; document.getElementById('mPost').innerText=m.post; document.getElementById('mDuty').innerText=m.duty; document.getElementById('mVata').innerText=m.vata; document.getElementById('mOnudan').innerText=m.onudan; document.getElementById('mPabo').innerText=m.pabo; document.getElementById('mYearAy').innerText=m.yearAy; document.getElementById('mYearOnudan').innerText=m.yearOnudan; document.getElementById('profileModal').style.display='block'; }
+function openProfile(i){ currentIndex=i; var m=membersData[i]; document.getElementById('loginName').innerText=m.name; document.getElementById('inputId').value=''; document.getElementById('inputPass').value=''; document.getElementById('loginError').style.display='none'; document.getElementById('loginModal').style.display='block'; }
+function closeLogin(){ document.getElementById('loginModal').style.display='none'; }
+function checkLogin(){ var m=membersData[currentIndex]; var id=document.getElementById('inputId').value.trim(); var ps=document.getElementById('inputPass').value.trim(); if(id===m.id && ps===m.pass){ document.getElementById('loginModal').style.display='none'; document.getElementById('mImg').src=m.img; document.getElementById('mName').innerText=m.name; document.getElementById('mPost').innerText=m.post; document.getElementById('mDuty').innerText=m.duty; document.getElementById('mYearDuty').innerText=m.yearDuty; document.getElementById('mVata').innerText=m.vata; document.getElementById('mOnudan').innerText=m.onudan; document.getElementById('mPabo').innerText=m.pabo; document.getElementById('mYearAy').innerText=m.yearAy; document.getElementById('mYearOnudan').innerText=m.yearOnudan; document.getElementById('profileModal').style.display='block'; } else { document.getElementById('loginError').style.display='block'; } }
 function closeModal(){ document.getElementById('profileModal').style.display='none'; }
 </script>
 </body>
