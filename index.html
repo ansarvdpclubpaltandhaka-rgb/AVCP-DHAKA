@@ -48,14 +48,18 @@ h2{text-align:center;color:#0b5e2e;margin-bottom:15px}
 .pay-nagad{background:#f6921e}
 .pay-card b{font-size:18px}
 .pay-card p{font-size:20px;font-weight:bold;margin-top:5px;letter-spacing:1px}
-.trx-input{width:100%;padding:10px;border:none;border-radius:20px;margin-top:12px;text-align:center;font-size:14px;outline:none;background:#fff;color:#333}
+.trx-input{width:100%;padding:10px;border:none;border-radius:20px;margin-top:8px;text-align:center;font-size:14px;outline:none;background:#fff;color:#333}
+.trx-file{width:100%;padding:8px;border:none;border-radius:20px;margin-top:8px;background:#fff;color:#333;font-size:13px}
 .trx-btn{width:100%;padding:10px;border:none;border-radius:20px;margin-top:8px;font-weight:bold;cursor:pointer;background:#fff;color:#000;font-size:14px}
 .trx-msg{font-size:13px;margin-top:8px;font-weight:bold;min-height:18px}
-/* === DONATION LIST === */
+/* === CHOTO CHOTO DONATION CARD === */
 .donate-list{background:#fff;border:1px solid #ffc107;border-radius:15px;padding:15px;margin-top:15px;text-align:left}
-.donate-item{background:#f8f9fa;border-left:5px solid #e91e63;padding:10px;margin:8px 0;border-radius:8px;display:flex;justify-content:space-between;align-items:center}
-.donate-item b{color:#0b5e2e}
-.donate-amt{background:#e91e63;color:#fff;padding:5px 12px;border-radius:20px;font-weight:bold;font-size:13px;white-space:nowrap}
+.donate-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.donate-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.12);text-align:center;padding-bottom:8px;border:1px solid #eee}
+.donate-card img{width:100%;height:100px;object-fit:cover}
+.donate-card b{color:#0b5e2e;font-size:13px;display:block;margin-top:5px}
+.donate-card p{font-size:11px;color:#666;margin:2px 0}
+.donate-amt{background:#e91e63;color:#fff;display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:bold;margin-top:4px}
 .total-box{background:#0b5e2e;color:#fff;padding:12px;border-radius:10px;text-align:center;font-weight:bold;margin-top:10px}
 .contact{background:#fff;padding:25px;border-radius:15px;text-align:center;margin-top:25px;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
 .contact .post{color:#0b5e2e;font-weight:bold;font-size:19px;margin-bottom:20px}
@@ -83,12 +87,13 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 
 <div class="donate-box">
 <h2>❤️ ক্লাবে অনুদান পাঠান</h2>
-<p style="color:#555;margin-top:5px;">আপনার অনুদান ক্লাবের উন্নয়নে ব্যবহার হবে। নিচের যেকোনো একটা নাম্বারে Send Money করুন, তারপর নাম + টাকার পরিমাণ + TrxID লিখে Submit করুন।</p>
+<p style="color:#555;margin-top:5px;">নিচের যেকোনো একটা নাম্বারে Send Money করুন, তারপর নাম + টাকা + TrxID + ছবি দিয়ে Submit করুন।</p>
 <div class="pay-grid">
 <div class="pay-card pay-bkash"><b>📱 বিকাশ (Send Money)</b><p>---</p><span>মোঃ রুহুল আমিন</span>
 <input class="trx-input" id="bkashName" placeholder="আপনার নাম লিখুন">
 <input class="trx-input" id="bkashAmount" type="number" placeholder="টাকার পরিমাণ - যেমন: 500">
 <input class="trx-input" id="bkashTrx" placeholder="বিকাশ TrxID লিখুন">
+<input class="trx-file" id="bkashPhoto" type="file" accept="image/*">
 <button class="trx-btn" onclick="submitTrx('bkash')">✅ Submit</button>
 <p class="trx-msg" id="bkashMsg"></p>
 </div>
@@ -96,21 +101,19 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <input class="trx-input" id="nagadName" placeholder="আপনার নাম লিখুন">
 <input class="trx-input" id="nagadAmount" type="number" placeholder="টাকার পরিমাণ - যেমন: 500">
 <input class="trx-input" id="nagadTrx" placeholder="নগদ TrxID লিখুন">
+<input class="trx-file" id="nagadPhoto" type="file" accept="image/*">
 <button class="trx-btn" onclick="submitTrx('nagad')">✅ Submit</button>
 <p class="trx-msg" id="nagadMsg"></p>
 </div>
 </div>
 
-<!-- ===== SAMPROTIK ONUDAN LIST - EKHANE SHOW HOBE ===== -->
 <div class="donate-list">
 <h2 style="font-size:18px;">❤️ সাম্প্রতিক অনুদান</h2>
-<div id="donationList">
-<!-- TUMI NIJE EKHANE NOTUN ONUDAN ADD KORTE PARBA - NICHE EXAMPLE -->
-<div class="donate-item"><span>👤 <b>মোঃ রুহুল আমিন</b><br><small>বিকাশ • 20 Nov 2026</small></span><span class="donate-amt">৫০০ টাকা</span></div>
-<div class="donate-item"><span>👤 <b>করবী জাহান কনা</b><br><small>নগদ • 20 Nov 2026</small></span><span class="donate-amt">৩০০ টাকা</span></div>
+<div class="donate-grid" id="donationList">
+<div class="donate-card"><img src="https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg"><b>মোঃ রুহুল আমিন</b><p>বিকাশ • TrxID: 9AB1234567</p><span class="donate-amt">৫০০ টাকা</span></div>
+<div class="donate-card"><img src="https://i.ibb.co.com/Kp1HfdZ5/Whats-App-Image-2026-11-20-at-4-02-20-PM.jpg"><b>করবী জাহান কনা</b><p>নগদ • TrxID: 8CD1234567</p><span class="donate-amt">৩০০ টাকা</span></div>
 </div>
-<div class="total-box" id="totalDonate">মোট অনুদান: ৮০০ টাকা</div>
-<p style="text-align:center;color:#999;font-size:12px;margin-top:8px;">নতুন অনুদান আসলে উপরে চলে আসবে।</p>
+<div class="total-box">মোট অনুদান: ৮০০ টাকা</div>
 </div>
 </div>
 
@@ -146,19 +149,26 @@ function submitTrx(type){
 var nameId = type==='bkash' ? 'bkashName' : 'nagadName';
 var amtId = type==='bkash' ? 'bkashAmount' : 'nagadAmount';
 var trxId = type==='bkash' ? 'bkashTrx' : 'nagadTrx';
+var photoId = type==='bkash' ? 'bkashPhoto' : 'nagadPhoto';
 var msgId = type==='bkash' ? 'bkashMsg' : 'nagadMsg';
 var name = document.getElementById(nameId).value.trim();
 var amt = document.getElementById(amtId).value.trim();
 var trx = document.getElementById(trxId).value.trim();
+var file = document.getElementById(photoId).files[0];
 var msg = document.getElementById(msgId);
 if(name==="" || amt==="" || trx===""){ msg.innerText="⚠️ নাম + টাকা + TrxID ৩টাই লিখুন"; return; }
+if(!file){ msg.innerText="⚠️ গ্যালারি থেকে একটা ছবি বেছে নিন"; return; }
 var label = type==='bkash' ? 'বিকাশ' : 'নগদ';
+var reader = new FileReader();
+reader.onload = function(e){
 var div = document.createElement('div');
-div.className='donate-item';
-div.innerHTML='<span>👤 <b>'+name+'</b><br><small>'+label+' • TrxID: '+trx+' • আজ</small></span><span class="donate-amt">'+amt+' টাকা</span>';
+div.className='donate-card';
+div.innerHTML='<img src="'+e.target.result+'"><b>'+name+'</b><p>'+label+' • TrxID: '+trx+'</p><span class="donate-amt">'+amt+' টাকা</span>';
 document.getElementById('donationList').prepend(div);
-msg.innerText="✅ ধন্যবাদ "+name+"! আপনার "+amt+" টাকা অনুদান লিস্টে যোগ হয়েছে।";
-document.getElementById(nameId).value=""; document.getElementById(amtId).value=""; document.getElementById(trxId).value="";
+msg.innerText="✅ ধন্যবাদ "+name+"! আপনার অনুদান লিস্টে যোগ হয়েছে।";
+document.getElementById(nameId).value=""; document.getElementById(amtId).value=""; document.getElementById(trxId).value=""; document.getElementById(photoId).value="";
+};
+reader.readAsDataURL(file);
 }
 var COMMON_PASS="---";
 var membersData = [
