@@ -143,6 +143,7 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <div class="modal-content"><span class="close" onclick="closeModal()">×</span><img id="mImg" src=""><h2 id="mName" style="margin-top:10px;"></h2><div class="badge" id="mPost"></div><p id="mIdMobile" style="font-size:14px;margin-top:5px;color:#333"></p><div class="grid2"><div>📅 <b>এই মাসে ডিউটি</b><br><span id="mDuty"></span></div><div>📅 <b>এই বছরে মোট ডিউটি</b><br><span id="mYearDuty"></span></div><div>💰 <b>ভাতা পেয়েছি</b><br><span id="mVata"></span></div><div>❤️ <b>ক্লাবে অনুদান</b><br><span id="mOnudan"></span></div><div>⏳ <b>আরো ভাতা পাবো</b><br><span id="mPabo"></span></div><div>📊 <b>বাৎসরিক আয়</b><br><span id="mYearAy"></span></div><div>🎁 <b>বাৎসরিক অনুদান</b><br><span id="mYearOnudan"></span></div></div><p style="margin-top:15px;color:#666;font-size:13px;">প্রোফাইল বন্ধ করতে × চাপ দিন</p></div>
 </div>
 <script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbws4aKM9dle8z5WfSLiQ1yhCTVGRjWwGMwI5vnYSjg88wXM--MmtQjPJ1PWi8itGIfYIQ/exec";
 function showMembers(){ document.getElementById('homePage').style.display='none'; document.getElementById('membersPage').style.display='block'; window.scrollTo(0,0); }
 function showHome(){ document.getElementById('membersPage').style.display='none'; document.getElementById('homePage').style.display='block'; window.scrollTo(0,0); }
 function submitTrx(type){
@@ -159,6 +160,7 @@ var msg = document.getElementById(msgId);
 if(name==="" || amt==="" || trx===""){ msg.innerText="⚠️ নাম + টাকা + TrxID ৩টাই লিখুন"; return; }
 if(!file){ msg.innerText="⚠️ গ্যালারি থেকে একটা ছবি বেছে নিন"; return; }
 var label = type==='bkash' ? 'বিকাশ' : 'নগদ';
+msg.innerText="⏳ পাঠানো হচ্ছে...";
 var reader = new FileReader();
 reader.onload = function(e){
 var div = document.createElement('div');
@@ -167,6 +169,7 @@ div.innerHTML='<img src="'+e.target.result+'"><b>'+name+'</b><p>'+label+' • Tr
 document.getElementById('donationList').prepend(div);
 msg.innerText="✅ ধন্যবাদ "+name+"! আপনার অনুদান লিস্টে যোগ হয়েছে।";
 document.getElementById(nameId).value=""; document.getElementById(amtId).value=""; document.getElementById(trxId).value=""; document.getElementById(photoId).value="";
+fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:'name='+encodeURIComponent(name)+'&amount='+encodeURIComponent(amt)+'&trx='+encodeURIComponent(trx)+'&type='+encodeURIComponent(label)}).catch(function(){});
 };
 reader.readAsDataURL(file);
 }
