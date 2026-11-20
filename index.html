@@ -40,7 +40,6 @@ h2{text-align:center;color:#0b5e2e;margin-bottom:15px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px;text-align:left}
 .grid2 div{background:#f8f9fa;padding:12px;border-radius:10px;font-size:13px;line-height:1.6}
 .grid2 b{color:#0b5e2e}
-/* === DONATION BOX === */
 .donate-box{background:#fff;border:2px solid #e91e63;border-radius:15px;padding:20px;text-align:center;margin-top:25px;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
 .donate-box h2{color:#e91e63}
 .pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px}
@@ -49,6 +48,10 @@ h2{text-align:center;color:#0b5e2e;margin-bottom:15px}
 .pay-nagad{background:#f6921e}
 .pay-card b{font-size:18px}
 .pay-card p{font-size:20px;font-weight:bold;margin-top:5px;letter-spacing:1px}
+/* === TrxID INPUT === */
+.trx-input{width:100%;padding:10px;border:none;border-radius:20px;margin-top:12px;text-align:center;font-size:14px;outline:none;background:#fff;color:#333}
+.trx-btn{width:100%;padding:10px;border:none;border-radius:20px;margin-top:8px;font-weight:bold;cursor:pointer;background:#fff;color:#000;font-size:14px}
+.trx-msg{font-size:13px;margin-top:8px;font-weight:bold;min-height:18px}
 .contact{background:#fff;padding:25px;border-radius:15px;text-align:center;margin-top:25px;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
 .contact .post{color:#0b5e2e;font-weight:bold;font-size:19px;margin-bottom:20px}
 .social{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
@@ -67,24 +70,35 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <div class="box">
 <h2>আমাদের সেবা</h2>
 <div class="cards"><div class="card"><h3>🛡️ নিরাপত্তা</h3><p>এলাকার নিরাপত্তা ও শৃঙ্খলা রক্ষা</p></div><div class="card"><h3>🤝 সমাজ সেবা</h3><p>দুর্যোগে মানুষের পাশে দাঁড়ানো</p></div><div class="card"><h3>🎓 প্রশিক্ষণ</h3><p>সদস্যদের প্রশিক্ষণ ও উন্নয়ন</p></div></div>
+
 <div class="notice-board"><h2>📢 নোটিশ বোর্ড</h2>
 <div class="notice-item">📅 <b>সাপ্তাহিক মিটিং:</b> প্রতি শুক্রবার সকাল ৯ টায় ক্লাব অফিসে মিটিং হবে। সকল সদস্যকে উপস্থিত থাকার অনুরোধ করা হলো।</div>
 <div class="notice-item">📅 <b>নতুন সদস্য ভর্তি চলছে:</b> আগ্রহীরা নিচের ফরম পূরণ করুন।</div>
 </div>
-<button class="members-btn" onclick="showMembers()">👥 আমাদের সদস্যবৃন্দ দেখুন <span>৫০ জন সদস্যের প্রোফাইল দেখতে এখানে ক্লিক করুন →</span></button>
-<div class="notice"><h2>সদস্য হতে চান?</h2><p>নিচের বাটনে ক্লিক করে ফরম পূরণ করুন।</p><br><a class="btn" href="https://forms.gle/TRygmtZUUFGPggzp6">এখনই আবেদন করুন</a></div>
 
-<!-- ===== CLUB DONATION - BKASH / NAGAD ===== -->
+<!-- ===== CLUB DONATION - NOTICE BOARD ER NICHE + TrxID ===== -->
 <div class="donate-box">
 <h2>❤️ ক্লাবে অনুদান পাঠান</h2>
-<p style="color:#555;margin-top:5px;">আপনার অনুদান ক্লাবের উন্নয়নে ব্যবহার হবে। নিচের যেকোনো একটা নাম্বারে Send Money করুন।</p>
+<p style="color:#555;margin-top:5px;">আপনার অনুদান ক্লাবের উন্নয়নে ব্যবহার হবে। নিচের যেকোনো একটা নাম্বারে Send Money করুন, তারপর TrxID টা লিখে Submit করুন।</p>
 <div class="pay-grid">
-<div class="pay-card pay-bkash"><b>📱 বিকাশ (Send Money)</b><p>---</p><span>মোঃ রুহুল আমিন</span></div>
-<div class="pay-card pay-nagad"><b>📱 নগদ (Send Money)</b><p>---</p><span>মোঃ রুহুল আমিন</span></div>
+<!-- BKASH -->
+<div class="pay-card pay-bkash"><b>📱 বিকাশ (Send Money)</b><p>---</p><span>মোঃ রুহুল আমিন</span>
+<input class="trx-input" id="bkashTrx" placeholder="বিকাশ TrxID লিখুন - যেমন: 9AB1234567">
+<button class="trx-btn" onclick="submitTrx('bkash')">✅ Submit TrxID</button>
+<p class="trx-msg" id="bkashMsg"></p>
 </div>
-<p style="margin-top:12px;color:#666;font-size:13px;">টাকা পাঠানোর পর WhatsApp এ স্ক্রিনশট পাঠিয়ে দিবেন।</p>
+<!-- NAGAD -->
+<div class="pay-card pay-nagad"><b>📱 নগদ (Send Money)</b><p>---</p><span>মোঃ রুহুল আমিন</span>
+<input class="trx-input" id="nagadTrx" placeholder="নগদ TrxID লিখুন - যেমন: 8CD1234567">
+<button class="trx-btn" onclick="submitTrx('nagad')">✅ Submit TrxID</button>
+<p class="trx-msg" id="nagadMsg"></p>
+</div>
+</div>
+<p style="margin-top:12px;color:#666;font-size:13px;">টাকা পাঠানোর পর WhatsApp এ স্ক্রিনশট পাঠিয়ে দিলেও হবে।</p>
 </div>
 
+<button class="members-btn" onclick="showMembers()">👥 আমাদের সদস্যবৃন্দ দেখুন <span>৫০ জন সদস্যের প্রোফাইল দেখতে এখানে ক্লিক করুন →</span></button>
+<div class="notice"><h2>সদস্য হতে চান?</h2><p>নিচের বাটনে ক্লিক করে ফরম পূরণ করুন।</p><br><a class="btn" href="https://forms.gle/TRygmtZUUFGPggzp6">এখনই আবেদন করুন</a></div>
 <div class="contact"><h2>যোগাযোগ করুন</h2><p style="font-size:22px;font-weight:bold;margin-top:5px;">মোঃ রুহুল আমিন</p><p class="post">ওয়ার্ড দলনেতা<br>আনসার ভিডিপি ক্লাব পল্টন, ঢাকা</p><div class="social"><a class="call" href="tel:">📞 কল করুন</a><a class="whatsapp" href="https://chat.whatsapp.com/FFqTSBNc0cc3oAiXXy2bCO?s=cl&p=a&iam=2" target="_blank">💬 WhatsApp গ্রুপে যুক্ত হোন</a><a class="facebook" href="https://www.facebook.com/share/1KZnC8A28b/" target="_blank">📘 Facebook পেজ</a><a class="youtube" href="#" >▶️ YouTube - শীঘ্রই আসছে</a></div></div>
 </div>
 </div>
@@ -111,6 +125,16 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <script>
 function showMembers(){ document.getElementById('homePage').style.display='none'; document.getElementById('membersPage').style.display='block'; window.scrollTo(0,0); }
 function showHome(){ document.getElementById('membersPage').style.display='none'; document.getElementById('homePage').style.display='block'; window.scrollTo(0,0); }
+// TrxID Submit
+function submitTrx(type){
+var inputId = type==='bkash' ? 'bkashTrx' : 'nagadTrx';
+var msgId = type==='bkash' ? 'bkashMsg' : 'nagadMsg';
+var val = document.getElementById(inputId).value.trim();
+var msg = document.getElementById(msgId);
+if(val===""){ msg.innerText="⚠️ আগে TrxID টা লিখুন"; return; }
+msg.innerText="✅ ধন্যবাদ! আপনার TrxID ("+val+") জমা হয়েছে। দলনেতা চেক করে নিবেন।";
+document.getElementById(inputId).value="";
+}
 var COMMON_PASS="---";
 var membersData = [
 {name:"১. মোঃ রুহুল আমিন",post:"ওয়ার্ড দলনেতা",id:"---",mobile:"---",pass:COMMON_PASS,img:"https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg",duty:"০৫ দিন",yearDuty:"৮৯ দিন",vata:"০০০ টাকা",onudan:"১,২২০ টাকা",pabo:"৫,০০০ টাকা",yearAy:"৬৯১৯০টাকা",yearOnudan:"--- টাকা"},
