@@ -113,7 +113,7 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <div class="donate-card"><img src="https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg"><b>মোঃ রুহুল আমিন</b><p>বিকাশ • TrxID: 9AB1234567</p><span class="donate-amt">৫০০ টাকা</span></div>
 <div class="donate-card"><img src="https://i.ibb.co.com/Kp1HfdZ5/Whats-App-Image-2026-11-20-at-4-02-20-PM.jpg"><b>করবী জাহান কনা</b><p>নগদ • TrxID: 8CD1234567</p><span class="donate-amt">৩০০ টাকা</span></div>
 </div>
-<div class="total-box">মোট অনুদান: ৮০০ টাকা</div>
+<div class="total-box">মোট অনুদান <span id="totalDonation">লোড হচ্ছে...</span></div>
 </div>
 </div>
 
@@ -246,6 +246,14 @@ function openProfile(i){ currentIndex=i; var m=membersData[i]; document.getEleme
 function closeLogin(){ document.getElementById('loginModal').style.display='none'; }
 function checkLogin(){ var m=membersData[currentIndex]; var id=document.getElementById('inputId').value.trim(); var ps=document.getElementById('inputPass').value.trim(); if(id===m.id && ps===m.pass){ document.getElementById('loginModal').style.display='none'; document.getElementById('mImg').src=m.img; document.getElementById('mName').innerText=m.name; document.getElementById('mPost').innerText=m.post; document.getElementById('mIdMobile').innerText='ID: '+m.id+' | মোবাইল: '+m.mobile; document.getElementById('mDuty').innerText=m.duty; document.getElementById('mYearDuty').innerText=m.yearDuty; document.getElementById('mVata').innerText=m.vata; document.getElementById('mOnudan').innerText=m.onudan; document.getElementById('mPabo').innerText=m.pabo; document.getElementById('mYearAy').innerText=m.yearAy; document.getElementById('mYearOnudan').innerText=m.yearOnudan; document.getElementById('profileModal').style.display='block'; } else { document.getElementById('loginError').style.display='block'; } }
 function closeModal(){ document.getElementById('profileModal').style.display='none'; }
+  function loadTotal(){
+  fetch(SCRIPT_URL)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("totalDonation").innerText = data.total + " টাকা";
+    });
+}
+loadTotal();
 </script>
 </body>
 </html>
