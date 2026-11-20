@@ -22,7 +22,6 @@ h2{text-align:center;color:#0b5e2e;margin-bottom:15px}
 .notice-item{background:#f8f9fa;border-left:5px solid #0b5e2e;padding:12px;margin:10px 0;border-radius:8px;text-align:left}
 .members-btn{background:#0b5e2e;color:#fff;padding:18px 25px;border-radius:15px;text-align:center;display:block;font-size:20px;font-weight:bold;margin-top:25px;box-shadow:0 2px 10px rgba(0,0,0,0.15);cursor:pointer;border:none;width:100%}
 .members-btn span{display:block;font-size:14px;font-weight:normal;margin-top:5px;opacity:0.9}
-/* === SEARCH BOX - SODOSSO PAGE === */
 .search-box{width:100%;padding:15px;border:3px solid #0b5e2e;border-radius:30px;font-size:17px;margin:12px 0 5px 0;outline:none;text-align:center;background:#fff;display:block}
 .members{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin-top:15px}
 .member{background:#fff;padding:15px;border-radius:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-top:4px solid #0b5e2e;cursor:pointer}
@@ -41,6 +40,15 @@ h2{text-align:center;color:#0b5e2e;margin-bottom:15px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px;text-align:left}
 .grid2 div{background:#f8f9fa;padding:12px;border-radius:10px;font-size:13px;line-height:1.6}
 .grid2 b{color:#0b5e2e}
+/* === DONATION BOX === */
+.donate-box{background:#fff;border:2px solid #e91e63;border-radius:15px;padding:20px;text-align:center;margin-top:25px;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
+.donate-box h2{color:#e91e63}
+.pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px}
+.pay-card{padding:15px;border-radius:12px;color:#fff}
+.pay-bkash{background:#e2136e}
+.pay-nagad{background:#f6921e}
+.pay-card b{font-size:18px}
+.pay-card p{font-size:20px;font-weight:bold;margin-top:5px;letter-spacing:1px}
 .contact{background:#fff;padding:25px;border-radius:15px;text-align:center;margin-top:25px;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
 .contact .post{color:#0b5e2e;font-weight:bold;font-size:19px;margin-bottom:20px}
 .social{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
@@ -49,7 +57,7 @@ h2{text-align:center;color:#0b5e2e;margin-bottom:15px}
 footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px}
 .login-input{width:100%;padding:12px;margin:8px 0;border:2px solid #ddd;border-radius:10px;font-size:16px;text-align:center}
 .login-btn{background:#0b5e2e;color:#fff;border:none;padding:13px;width:100%;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px}
-@media(max-width:600px){.hero{min-height:560px}.hero h1{font-size:28px}.social a{width:100%}}
+@media(max-width:600px){.hero{min-height:560px}.hero h1{font-size:28px}.social a{width:100%}.pay-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -65,20 +73,28 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 </div>
 <button class="members-btn" onclick="showMembers()">👥 আমাদের সদস্যবৃন্দ দেখুন <span>৫০ জন সদস্যের প্রোফাইল দেখতে এখানে ক্লিক করুন →</span></button>
 <div class="notice"><h2>সদস্য হতে চান?</h2><p>নিচের বাটনে ক্লিক করে ফরম পূরণ করুন।</p><br><a class="btn" href="https://forms.gle/TRygmtZUUFGPggzp6">এখনই আবেদন করুন</a></div>
+
+<!-- ===== CLUB DONATION - BKASH / NAGAD ===== -->
+<div class="donate-box">
+<h2>❤️ ক্লাবে অনুদান পাঠান</h2>
+<p style="color:#555;margin-top:5px;">আপনার অনুদান ক্লাবের উন্নয়নে ব্যবহার হবে। নিচের যেকোনো একটা নাম্বারে Send Money করুন।</p>
+<div class="pay-grid">
+<div class="pay-card pay-bkash"><b>📱 বিকাশ (Send Money)</b><p>---</p><span>মোঃ রুহুল আমিন</span></div>
+<div class="pay-card pay-nagad"><b>📱 নগদ (Send Money)</b><p>---</p><span>মোঃ রুহুল আমিন</span></div>
+</div>
+<p style="margin-top:12px;color:#666;font-size:13px;">টাকা পাঠানোর পর WhatsApp এ স্ক্রিনশট পাঠিয়ে দিবেন।</p>
+</div>
+
 <div class="contact"><h2>যোগাযোগ করুন</h2><p style="font-size:22px;font-weight:bold;margin-top:5px;">মোঃ রুহুল আমিন</p><p class="post">ওয়ার্ড দলনেতা<br>আনসার ভিডিপি ক্লাব পল্টন, ঢাকা</p><div class="social"><a class="call" href="tel:">📞 কল করুন</a><a class="whatsapp" href="https://chat.whatsapp.com/FFqTSBNc0cc3oAiXXy2bCO?s=cl&p=a&iam=2" target="_blank">💬 WhatsApp গ্রুপে যুক্ত হোন</a><a class="facebook" href="https://www.facebook.com/share/1KZnC8A28b/" target="_blank">📘 Facebook পেজ</a><a class="youtube" href="#" >▶️ YouTube - শীঘ্রই আসছে</a></div></div>
 </div>
 </div>
 
-<!-- ===== SODOSSO PAGE + SEARCH ===== -->
 <div id="membersPage" style="display:none;">
 <div class="box" style="padding-top:20px;">
 <h2>👥 আমাদের সদস্যবৃন্দ (৫০ জন)</h2>
 <p style="text-align:center;color:#666;margin-bottom:5px;">যেকোনো সদস্যের কার্ডে ক্লিক করলে তার ফুল প্রোফাইল খুলবে</p>
-
-<!-- SEARCH BOX EKHANE -->
 <input class="search-box" id="searchInput" onkeyup="doSearch()" placeholder="🔍 নাম / পদবি / ID / মোবাইল দিয়ে খুঁজুন...">
 <p id="searchResult" style="text-align:center;color:#0b5e2e;font-weight:bold;margin:5px 0;"></p>
-
 <button class="back-btn" onclick="showHome()">← হোমে ফিরুন</button>
 <div class="members" id="members"></div>
 <button class="back-btn" onclick="showHome()">← হোমে ফিরুন</button>
@@ -95,12 +111,9 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <script>
 function showMembers(){ document.getElementById('homePage').style.display='none'; document.getElementById('membersPage').style.display='block'; window.scrollTo(0,0); }
 function showHome(){ document.getElementById('membersPage').style.display='none'; document.getElementById('homePage').style.display='block'; window.scrollTo(0,0); }
-
-// *** তুমি নিজে এখানে ১ বার Password টাইপ করবা - সবার জন্য একটাই হবে ***
 var COMMON_PASS="---";
-
 var membersData = [
-{name:"১. মোঃ রুহুল আমিন",post:"ওয়ার্ড দলনেতা",id:"26296",mobile:"01951480434",pass:"Paltan@2026",img:"https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg",duty:"০৫ দিন",yearDuty:"৮৯ দিন",vata:"০০০ টাকা",onudan:"১,২২০ টাকা",pabo:"৫,০০০ টাকা",yearAy:"৬৯১৯০টাকা",yearOnudan:"--- টাকা"},
+{name:"১. মোঃ রুহুল আমিন",post:"ওয়ার্ড দলনেতা",id:"---",mobile:"---",pass:COMMON_PASS,img:"https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg",duty:"০৫ দিন",yearDuty:"৮৯ দিন",vata:"০০০ টাকা",onudan:"১,২২০ টাকা",pabo:"৫,০০০ টাকা",yearAy:"৬৯১৯০টাকা",yearOnudan:"--- টাকা"},
 {name:"২. করবী জাহান কনা",post:"ওয়ার্ড দলনেত্রী",id:"---",mobile:"---",pass:COMMON_PASS,img:"https://i.ibb.co.com/Kp1HfdZ5/Whats-App-Image-2026-11-20-at-4-02-20-PM.jpg",duty:"-- দিন",yearDuty:"-- দিন",vata:"000 টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
 {name:"৩. সাইমুন ইসলাম",post:"টিডিপি মেম্বার",id:"---",mobile:"---",pass:COMMON_PASS,img:"https://i.ibb.co.com/wF50GrMj/Whats-App-Image-2026-11-20-at-2-33-38-AM.jpg",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
 {name:"৪. নাতাশা আক্তার",post:"টিডিপি মেম্বার",id:"---",mobile:"---",pass:COMMON_PASS,img:"https://i.ibb.co.com/031Ys9h/Whats-App-Image-2026-11-20-at-2-33-38-AM-1.jpg",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা"},
@@ -160,7 +173,6 @@ document.getElementById('members').innerHTML=html;
 document.getElementById('searchResult').innerText = list.length + ' জন সদস্য পাওয়া গেছে';
 }
 renderMembers(membersData);
-// === SEARCH FUNCTION ===
 function doSearch(){
 var q=document.getElementById('searchInput').value.toLowerCase().trim();
 if(q===""){ renderMembers(membersData); return; }
