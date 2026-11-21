@@ -80,6 +80,8 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 .edit-input{width:100%;padding:11px;border:2px solid #0b5e2e;border-radius:10px;font-size:15px;margin:6px 0;outline:none}
 .edit-label{font-weight:bold;color:#0b5e2e;font-size:14px;text-align:left;display:block;margin-top:12px}
 .edit-btn{background:#ffc107;color:#000;border:none;padding:13px;width:100%;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:10px}
+.edit-btn-top{background:#ffc107;color:#000;border:none;padding:12px 18px;border-radius:30px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.edit-top-wrap{text-align:left;margin:5px 0 10px 0}
 .save-btn{background:#0b5e2e;color:#fff;border:none;padding:13px;width:100%;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:10px}
 .logout-btn{background:#fff;color:#c62828;border:2px solid #c62828;padding:11px;width:100%;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;margin-top:10px}
 /* ===== STEP 3 ONLY - Profile এর উপরে Top Bar ===== */
@@ -159,6 +161,8 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <div class="box" style="padding-top:20px;">
 <h2>👤 আমার প্রোফাইল</h2>
 <p style="text-align:center;color:#666;">শুধু আপনার Personal ইনফরমেশন দেখছেন</p>
+<!-- Edit বাটন এখন উপরে বামপাশে -->
+<div class="edit-top-wrap"><button class="edit-btn-top" id="editBtn" onclick="openEdit()">✏️ Edit করুন</button></div>
 <!-- ===== STEP 3 ONLY - Profile এর একদম উপরে Top Bar ===== -->
 <div class="top-bar"><div class="top-row">
 <button class="top-btn top-noti" onclick="togglePanel('notiPanel')">🔔 Notification <span class="noti-dot" id="notiCount">3</span></button>
@@ -206,7 +210,6 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <button class="logout-btn" onclick="cancelEdit()">❌ বাতিল</button>
 <p id="saveMsg" style="text-align:center;color:#0b5e2e;font-weight:bold;margin-top:8px;"></p>
 </div>
-<button class="edit-btn" id="editBtn" onclick="openEdit()">✏️ Edit করুন</button>
 </div>
 <div class="dash-card">
 <h2 style="font-size:18px;">📊 আমার ডিউটি / ভাতা / অনুদান</h2>
@@ -229,7 +232,6 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbws4aKM9dle8z5WfSLiQ1yhCTVGRjWwGMwI5vnYSjg88wXM--MmtQjPJ1PWi8itGIfYIQ/exec";
 const PERSONAL_URL = "https://script.google.com/macros/s/AKfycbx68hY2U4o2Nze-BYlSCXzolrKL5-IvWb5ESC5jGxFhPl7jnyztnXMpV21Pb3cDhWpzAA/exec";
-// ===== STEP 3 ONLY - আজকের Update এখান থেকে বদলাবেন =====
 const TODAY_UPDATE = "আজ শুক্রবার সকাল ৯ টায় ক্লাব অফিসে সাপ্তাহিক মিটিং হবে। সকল সদস্যকে সময়মতো উপস্থিত থাকার অনুরোধ করা হলো।";
 document.getElementById('todayUpdateText').innerText = TODAY_UPDATE;
 function togglePanel(id){
@@ -366,7 +368,7 @@ function openDashboard(i){
   document.getElementById('membersPage').style.display='none';
   document.getElementById('dashboardPage').style.display='block';
   document.getElementById('editInfo').style.display='none';
-  document.getElementById('editBtn').style.display='block';
+  document.getElementById('editBtn').style.display='inline-block';
   document.getElementById('notiPanel').style.display='none';
   document.getElementById('todayPanel').style.display='none';
   document.getElementById('prevPanel').style.display='none';
@@ -415,7 +417,7 @@ function openEdit(){
   document.getElementById('editInfo').style.display='block';
   document.getElementById('editBtn').style.display='none';
 }
-function cancelEdit(){ document.getElementById('editInfo').style.display='none'; document.getElementById('editBtn').style.display='block'; }
+function cancelEdit(){ document.getElementById('editInfo').style.display='none'; document.getElementById('editBtn').style.display='inline-block'; }
 function readFileAsDataURL(file, cb){
   if(!file){ cb(''); return; }
   var r=new FileReader(); r.onload=function(e){ cb(e.target.result); }; r.readAsDataURL(file);
