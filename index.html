@@ -201,6 +201,7 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 </div>
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbws4aKM9dle8z5WfSLiQ1yhCTVGRjWwGMwI5vnYSjg88wXM--MmtQjPJ1PWi8itGIfYIQ/exec";
+const PERSONAL_URL = "https://script.google.com/macros/s/AKfycbx68hY2U4o2Nze-BYlSCXzolrKL5-IvWb5ESC5jGxFhPl7jnyztnXMpV21Pb3cDhWpzAA/exec";
 function showMembers(){ document.getElementById('homePage').style.display='none'; document.getElementById('membersPage').style.display='block'; document.getElementById('dashboardPage').style.display='none'; window.scrollTo(0,0); }
 function showHome(){ document.getElementById('membersPage').style.display='none'; document.getElementById('dashboardPage').style.display='none'; document.getElementById('homePage').style.display='block'; window.scrollTo(0,0); }
 function submitTrx(type){
@@ -231,8 +232,8 @@ fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'appli
 reader.readAsDataURL(file);
 }
 var membersData = [
-{name:"১. মোঃ রুহুল আমিন",post:"ওয়ার্ড দলনেতা",id:"26296",mobile:"01951480434",pass:"Paltan@2026",img:"https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg",duty:"০৫ দিন",yearDuty:"৮৯ দিন",vata:"০০০ টাকা",onudan:"১,২২০ টাকা",pabo:"৫,০০০ টাকা",yearAy:"৬৯১৯০টাকা",yearOnudan:"13650 টাকা",father:"",mother:"",address:"",blood:"",nid:"",bkash:"",edu:"",photo:"",nidFront:"",nidBack:"",cert10:"",cert14:"",cert28:""},
-{name:"২. করবী জাহান কনা",post:"ওয়ার্ড দলনেত্রী",id:"78646",mobile:"01620-437492",pass:"Paltan22018",img:"https://i.ibb.co.com/Kp1HfdZ5/Whats-App-Image-2026-11-20-at-4-02-20-PM.jpg",duty:"০৫ দিন",yearDuty:"২৬",vata:"000 টাকা",onudan:"১২০০ টাকা",pabo:"৫০০০ টাকা",yearAy:"১৮৩৭৫ টাকা",yearOnudan:"১২০০ টাকা",father:"",mother:"",address:"",blood:"",nid:"",bkash:"",edu:"",photo:"",nidFront:"",nidBack:"",cert10:"",cert14:"",cert28:""},
+{name:"১. মোঃ রুহুল আমিন",post:"ওয়ার্ড দলনেতা",id:"26296",mobile:"01951480434",pass:"",img:"https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg",duty:"০৫ দিন",yearDuty:"৮৯ দিন",vata:"০০০ টাকা",onudan:"১,২২০ টাকা",pabo:"৫,০০০ টাকা",yearAy:"৬৯১৯০টাকা",yearOnudan:"13650 টাকা",father:"",mother:"",address:"",blood:"",nid:"",bkash:"",edu:"",photo:"",nidFront:"",nidBack:"",cert10:"",cert14:"",cert28:""},
+{name:"২. করবী জাহান কনা",post:"ওয়ার্ড দলনেত্রী",id:"78646",mobile:"01620-437492",pass:"",img:"https://i.ibb.co.com/Kp1HfdZ5/Whats-App-Image-2026-11-20-at-4-02-20-PM.jpg",duty:"০৫ দিন",yearDuty:"২৬",vata:"000 টাকা",onudan:"১২০০ টাকা",pabo:"৫০০০ টাকা",yearAy:"১৮৩৭৫ টাকা",yearOnudan:"১২০০ টাকা",father:"",mother:"",address:"",blood:"",nid:"",bkash:"",edu:"",photo:"",nidFront:"",nidBack:"",cert10:"",cert14:"",cert28:""},
 {name:"৩. সাইমুন ইসলাম",post:"টিডিপি মেম্বার",id:"46620",mobile:"01345-352606",pass:"",img:"https://i.ibb.co.com/wF50GrMj/Whats-App-Image-2026-11-20-at-2-33-38-AM.jpg",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা",father:"",mother:"",address:"",blood:"",nid:"",bkash:"",edu:"",photo:"",nidFront:"",nidBack:"",cert10:"",cert14:"",cert28:""},
 {name:"৪. নাতাশা আক্তার",post:"টিডিপি মেম্বার",id:"46626",mobile:"01794-529198",pass:"",img:"https://i.ibb.co.com/031Ys9h/Whats-App-Image-2026-11-20-at-2-33-38-AM-1.jpg",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা",father:"",mother:"",address:"",blood:"",nid:"",bkash:"",edu:"",photo:"",nidFront:"",nidBack:"",cert10:"",cert14:"",cert28:""},
 {name:"৫. সাকিবুল ইসলাম রোহান",post:"টিডিপি মেম্বার",id:"85971",mobile:"01580-843397",pass:"",img:"https://i.ibb.co.com/5gMBg72r/Whats-App-Image-2026-11-20-at-2-33-39-AM.jpg",duty:"-- দিন",yearDuty:"-- দিন",vata:"-- টাকা",onudan:"-- টাকা",pabo:"-- টাকা",yearAy:"-- টাকা",yearOnudan:"-- টাকা",father:"",mother:"",address:"",blood:"",nid:"",bkash:"",edu:"",photo:"",nidFront:"",nidBack:"",cert10:"",cert14:"",cert28:""},
@@ -406,7 +407,12 @@ function saveMyInfo(){
                 saved[m.id]={father:m.father,mother:m.mother,address:m.address,blood:m.blood,nid:m.nid,bkash:m.bkash,edu:m.edu,photo:m.photo,nidFront:m.nidFront,nidBack:m.nidBack,cert10:m.cert10,cert14:m.cert14,cert28:m.cert28};
                 localStorage.setItem('avcp_personal', JSON.stringify(saved));
               }catch(e){}
-              document.getElementById('saveMsg').innerText='✅ Save হয়ে গেছে!';
+              // Step 2 - Send to Google Sheet
+              try{
+                var body = 'id='+encodeURIComponent(m.id)+'&name='+encodeURIComponent(m.name)+'&post='+encodeURIComponent(m.post)+'&father='+encodeURIComponent(m.father)+'&mother='+encodeURIComponent(m.mother)+'&address='+encodeURIComponent(m.address)+'&blood='+encodeURIComponent(m.blood)+'&nid='+encodeURIComponent(m.nid)+'&bkash='+encodeURIComponent(m.bkash)+'&edu='+encodeURIComponent(m.edu)+'&photo='+encodeURIComponent(m.photo ? 'ছবি দেওয়া হয়েছে' : '')+'&nidFront='+encodeURIComponent(m.nidFront ? 'দেওয়া হয়েছে' : '')+'&nidBack='+encodeURIComponent(m.nidBack ? 'দেওয়া হয়েছে' : '')+'&cert10='+encodeURIComponent(m.cert10 ? 'দেওয়া হয়েছে' : '')+'&cert14='+encodeURIComponent(m.cert14 ? 'দেওয়া হয়েছে' : '')+'&cert28='+encodeURIComponent(m.cert28 ? 'দেওয়া হয়েছে' : '');
+                fetch(PERSONAL_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: body}).catch(function(){});
+              }catch(e){}
+              document.getElementById('saveMsg').innerText='✅ Save হয়ে গেছে! আপনার Sheet এ পাঠানো হয়েছে।';
               setTimeout(function(){ openDashboard(currentIndex); }, 600);
             });
           });
