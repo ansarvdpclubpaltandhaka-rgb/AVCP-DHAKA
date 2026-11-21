@@ -84,7 +84,6 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 .edit-top-wrap{text-align:left;margin:5px 0 10px 0}
 .save-btn{background:#0b5e2e;color:#fff;border:none;padding:13px;width:100%;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:10px}
 .logout-btn{background:#fff;color:#c62828;border:2px solid #c62828;padding:11px;width:100%;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;margin-top:10px}
-/* ===== STEP 3 ONLY - Profile এর উপরে Top Bar ===== */
 .top-bar{background:#fff;padding:12px;border-radius:15px;box-shadow:0 2px 10px rgba(0,0,0,0.1);margin-bottom:15px}
 .top-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .top-btn{border:none;padding:11px 14px;border-radius:30px;font-weight:bold;font-size:13px;cursor:pointer;color:#fff;position:relative;display:inline-flex;align-items:center;gap:6px}
@@ -161,9 +160,7 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <div class="box" style="padding-top:20px;">
 <h2>👤 আমার প্রোফাইল</h2>
 <p style="text-align:center;color:#666;">শুধু আপনার Personal ইনফরমেশন দেখছেন</p>
-<!-- Edit বাটন এখন উপরে বামপাশে -->
 <div class="edit-top-wrap"><button class="edit-btn-top" id="editBtn" onclick="openEdit()">✏️ Edit করুন</button></div>
-<!-- ===== STEP 3 ONLY - Profile এর একদম উপরে Top Bar ===== -->
 <div class="top-bar"><div class="top-row">
 <button class="top-btn top-noti" onclick="togglePanel('notiPanel')">🔔 Notification <span class="noti-dot" id="notiCount">3</span></button>
 <button class="top-btn top-today" onclick="togglePanel('todayPanel')">📢 আজকের Update</button>
@@ -186,7 +183,20 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <div class="dash-card">
 <h2 style="font-size:18px;">📋 আমার Personal ইনফরমেশন</h2>
 <div id="viewInfo"></div>
-<div id="editInfo" style="display:none;">
+</div>
+<div class="dash-card">
+<h2 style="font-size:18px;">📊 আমার ডিউটি / ভাতা / অনুদান</h2>
+<p style="text-align:center;color:#888;font-size:13px;">এইগুলা শুধু দেখা যাবে, Edit করা যাবে না</p>
+<div id="dashDutyInfo"></div>
+</div>
+<button class="back-btn" onclick="logoutDashboard()">← হোমে ফিরুন / Logout</button>
+</div>
+</div>
+<div id="editPage" style="display:none;">
+<div class="box" style="padding-top:20px;">
+<h2>✏️ প্রোফাইল Edit করুন</h2>
+<p style="text-align:center;color:#666;" id="editPageName"></p>
+<div class="dash-card" id="editInfo">
 <input class="edit-input" id="eFather" placeholder="বাবার নাম">
 <input class="edit-input" id="eMother" placeholder="মায়ের নাম">
 <input class="edit-input" id="eAddress" placeholder="ঠিকানা">
@@ -210,13 +220,7 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <button class="logout-btn" onclick="cancelEdit()">❌ বাতিল</button>
 <p id="saveMsg" style="text-align:center;color:#0b5e2e;font-weight:bold;margin-top:8px;"></p>
 </div>
-</div>
-<div class="dash-card">
-<h2 style="font-size:18px;">📊 আমার ডিউটি / ভাতা / অনুদান</h2>
-<p style="text-align:center;color:#888;font-size:13px;">এইগুলা শুধু দেখা যাবে, Edit করা যাবে না</p>
-<div id="dashDutyInfo"></div>
-</div>
-<button class="back-btn" onclick="logoutDashboard()">← হোমে ফিরুন / Logout</button>
+<button class="back-btn" onclick="cancelEdit()">← প্রোফাইলে ফিরুন</button>
 </div>
 </div>
 <footer>© 2026 আনসার ও ভিডিপি ক্লাব পল্টন, ঢাকা - মোঃ রুহুল আমিন</footer>
@@ -246,8 +250,8 @@ function togglePanel(id){
   }
   if(id==='notiPanel'){ document.getElementById('notiCount').style.display='none'; }
 }
-function showMembers(){ document.getElementById('homePage').style.display='none'; document.getElementById('membersPage').style.display='block'; document.getElementById('dashboardPage').style.display='none'; window.scrollTo(0,0); }
-function showHome(){ document.getElementById('membersPage').style.display='none'; document.getElementById('dashboardPage').style.display='none'; document.getElementById('homePage').style.display='block'; window.scrollTo(0,0); }
+function showMembers(){ document.getElementById('homePage').style.display='none'; document.getElementById('membersPage').style.display='block'; document.getElementById('dashboardPage').style.display='none'; document.getElementById('editPage').style.display='none'; window.scrollTo(0,0); }
+function showHome(){ document.getElementById('membersPage').style.display='none'; document.getElementById('dashboardPage').style.display='none'; document.getElementById('editPage').style.display='none'; document.getElementById('homePage').style.display='block'; window.scrollTo(0,0); }
 function submitTrx(type){
 var nameId = type==='bkash' ? 'bkashName' : 'nagadName';
 var amtId = type==='bkash' ? 'bkashAmount' : 'nagadAmount';
@@ -366,8 +370,8 @@ function openDashboard(i){
   currentIndex=i; var m=membersData[i];
   document.getElementById('homePage').style.display='none';
   document.getElementById('membersPage').style.display='none';
+  document.getElementById('editPage').style.display='none';
   document.getElementById('dashboardPage').style.display='block';
-  document.getElementById('editInfo').style.display='none';
   document.getElementById('editBtn').style.display='inline-block';
   document.getElementById('notiPanel').style.display='none';
   document.getElementById('todayPanel').style.display='none';
@@ -400,6 +404,7 @@ function openDashboard(i){
 }
 function openEdit(){
   var m=membersData[currentIndex];
+  document.getElementById('editPageName').innerText=m.name+' | ID: '+m.id;
   document.getElementById('eFather').value=m.father||'';
   document.getElementById('eMother').value=m.mother||'';
   document.getElementById('eAddress').value=m.address||'';
@@ -414,10 +419,13 @@ function openEdit(){
   document.getElementById('eCert14').value='';
   document.getElementById('eCert28').value='';
   document.getElementById('saveMsg').innerText='';
-  document.getElementById('editInfo').style.display='block';
-  document.getElementById('editBtn').style.display='none';
+  document.getElementById('dashboardPage').style.display='none';
+  document.getElementById('homePage').style.display='none';
+  document.getElementById('membersPage').style.display='none';
+  document.getElementById('editPage').style.display='block';
+  window.scrollTo(0,0);
 }
-function cancelEdit(){ document.getElementById('editInfo').style.display='none'; document.getElementById('editBtn').style.display='inline-block'; }
+function cancelEdit(){ document.getElementById('editPage').style.display='none'; openDashboard(currentIndex); }
 function readFileAsDataURL(file, cb){
   if(!file){ cb(''); return; }
   var r=new FileReader(); r.onload=function(e){ cb(e.target.result); }; r.readAsDataURL(file);
@@ -468,7 +476,7 @@ function saveMyInfo(){
     });
   });
 }
-function logoutDashboard(){ document.getElementById('dashboardPage').style.display='none'; document.getElementById('homePage').style.display='block'; window.scrollTo(0,0); }
+function logoutDashboard(){ document.getElementById('dashboardPage').style.display='none'; document.getElementById('editPage').style.display='none'; document.getElementById('homePage').style.display='block'; window.scrollTo(0,0); }
 </script>
 </body>
 </html>
