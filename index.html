@@ -81,7 +81,7 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 .edit-label{font-weight:bold;color:#0b5e2e;font-size:14px;text-align:left;display:block;margin-top:12px}
 .edit-btn{background:#ffc107;color:#000;border:none;padding:13px;width:100%;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:10px}
 .edit-btn-top{background:#ffc107;color:#000;border:none;padding:12px 18px;border-radius:30px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
-.edit-top-wrap{text-align:left;margin:5px 0 10px 0}
+.edit-top-wrap{text-align:left;margin:15px 0 0 0}
 .save-btn{background:#0b5e2e;color:#fff;border:none;padding:13px;width:100%;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:10px}
 .logout-btn{background:#fff;color:#c62828;border:2px solid #c62828;padding:11px;width:100%;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;margin-top:10px}
 .top-bar{background:#fff;padding:12px;border-radius:15px;box-shadow:0 2px 10px rgba(0,0,0,0.1);margin-bottom:15px}
@@ -160,7 +160,6 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <div class="box" style="padding-top:20px;">
 <h2>👤 আমার প্রোফাইল</h2>
 <p style="text-align:center;color:#666;">শুধু আপনার Personal ইনফরমেশন দেখছেন</p>
-<div class="edit-top-wrap"><button class="edit-btn-top" id="editBtn" onclick="openEdit()">✏️ Edit করুন</button></div>
 <div class="top-bar"><div class="top-row">
 <button class="top-btn top-noti" onclick="togglePanel('notiPanel')">🔔 Notification <span class="noti-dot" id="notiCount">3</span></button>
 <button class="top-btn top-today" onclick="togglePanel('todayPanel')">📢 আজকের Update</button>
@@ -179,6 +178,7 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <h2 id="dashName" style="margin-top:10px;"></h2>
 <div class="badge" id="dashPost"></div>
 <p id="dashIdMobile" style="margin-top:8px;color:#333;font-size:14px;"></p>
+<div class="edit-top-wrap"><button class="edit-btn-top" id="editBtn" onclick="openEdit()">✏️ Edit করুন</button></div>
 </div>
 <div class="dash-card">
 <h2 style="font-size:18px;">📋 আমার Personal ইনফরমেশন</h2>
