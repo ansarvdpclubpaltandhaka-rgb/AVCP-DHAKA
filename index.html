@@ -11,10 +11,19 @@ button{width:95%;padding:12px;background:#2e7d32;color:white;border:none;border-
 <p>শান্তি শৃঙ্খলা উন্নয়ন নিরাপত্তা সর্বত্র আমরা</p>
 <h1>আনসার ভিডিপি ক্লাব পল্টন</h1>
 <b>মোঃ রুহুল আমিন</b><br>পদবীঃ ওয়ার্ড দলনেতা<br><br>
-<div class="box"><h3>সদস্য লগইন</h3>
+<div class="box" id="loginBox"><h3>সদস্য লগইন</h3>
 <input id="uid" placeholder="ইউজার আইডি"><br>
 <input id="pass" type="password" placeholder="পাসওয়ার্ড"><br>
 <button onclick="login()">লগইন</button><p id="msg" style="color:red"></p></div>
+
+<!-- Welcome Message -->
+<div id="welcome-box" style="display:none;background:white;padding:20px;border-radius:15px;max-width:350px;margin:auto;">
+<h3>আসসালামু আলাইকুম!</h3>
+<p>ধন্যবাদ, আপনার অ্যাকাউন্টে সফলভাবে লগইন হয়েছে।</p>
+<p>আনসার ভিডিপি ক্লাব, পল্টন-এ আপনাকে স্বাগতম।<br>
+আপনার ডিউটি এবং সকল আপডেট এখান থেকেই দেখতে পারবেন।</p>
+</div>
+
 <script>
 function login(){
 let u=document.getElementById('uid').value;
@@ -73,7 +82,11 @@ let users = {
   "member50": "",
 };
 
-if(users[u] && users[u]==p){ window.location.href="home.html"; }
+if(users[u] && users[u]==p){
+  document.getElementById('loginBox').style.display="none";
+  document.getElementById('welcome-box').style.display="block";
+  setTimeout(function(){ window.location.href="home.html"; }, 5000);
+}
 else{ document.getElementById('msg').innerText="ভুল আইডি বা পাসওয়ার্ড!"; }
 }
 </script>
