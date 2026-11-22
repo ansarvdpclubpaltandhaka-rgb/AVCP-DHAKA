@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>আনসার ও ভিডিপি ক্লাব পল্টন</title>
+<style>body{font-family:Arial;text-align:center;background:#e8f5e9;padding:20px}
+h1{color:#1b5e20}.box{background:white;padding:20px;border-radius:15px;max-width:350px;margin:auto}
+input{width:90%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc}
+button{width:95%;padding:12px;background:#2e7d32;color:white;border:none;border-radius:8px;font-size:18px}</style>
+</head>
+<body>
+<p>শান্তি শৃঙ্খলা উন্নয়ন নিরাপত্তা সর্বত্র আমরা</p>
+<h1>আনসার ভিডিপি ক্লাব পল্টন</h1>
+<b>মোঃ রুহুল আমিন</b><br>পদবীঃ ওয়ার্ড দলনেতা<br><br>
+<div class="box"><h3>সদস্য লগইন</h3>
+<input id="uid" placeholder="ইউজার আইডি"><br>
+<input id="pass" type="password" placeholder="পাসওয়ার্ড"><br>
+<button onclick="login()">লগইন</button><p id="msg" style="color:red"></p></div>
+<script>
+function login(){
+let u=document.getElementById('uid').value;
+let p=document.getElementById('pass').value;
+if(u=="admin" && p=="1234"){ window.location.href="home.html"; }
+else{ document.getElementById('msg').innerText="ভুল আইডি বা পাসওয়ার্ড!"; }
+}
+</script>
+</body>
+</html>
