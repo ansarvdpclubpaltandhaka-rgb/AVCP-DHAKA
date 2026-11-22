@@ -1,0 +1,16 @@
+{
+  "name": "আনসার ও ভিডিপি ক্লাব পল্টন, ঢাকা",
+  "short_name": "Ansar VDP Club",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b5e2e",
+  "theme_color": "#0b5e2e",
+  "description": "শান্তি শৃঙ্খলা উন্নয়ন নিরাপত্তায় সর্বত্র আমরা",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
