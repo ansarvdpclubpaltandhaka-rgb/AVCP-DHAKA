@@ -45,11 +45,10 @@ button{width:95%;padding:12px;background:#2e7d32;color:white;border:none;border-
 
 <script>
 function login(){
-let u=document.getElementById('uid').value;
-let p=document.getElementById('pass').value;
+let u=document.getElementById('uid').value.trim();
+let p=document.getElementById('pass').value.trim();
 
 let users = {
-  "admin": "Paltan@2018",
   "admin": "Paltan@2018",
   "SAIMUN ISLAM": "46620",
   "NATASHA AKTER": "46626",
@@ -111,7 +110,7 @@ let users = {
   "member60": "",
 };
 
-if(users[u] && users[u]==p){
+if(u in users && users[u]==p){
   document.getElementById('loginBox').style.display="none";
   document.getElementById('welcome-box').style.display="block";
   let sec = 5;
