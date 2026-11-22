@@ -2,17 +2,50 @@
 <html lang="bn">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>আনসার ভিডিপি ক্লাব পল্টন</title>
-<style>body{font-family:Arial;text-align:center;background:#e8f5e9;padding:20px;margin:0}
-h1{color:#1b5e20}.box{background:white;padding:20px;border-radius:15px;max-width:350px;margin:auto}
+<style>
+body{font-family:Arial;text-align:center;background:#e8f5e9;padding:0;margin:0}
+h1{color:#1b5e20}
+.box{background:white;padding:20px;border-radius:15px;max-width:350px;margin:auto}
 input{width:90%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc}
 button{width:95%;padding:12px;background:#2e7d32;color:white;border:none;border-radius:8px;font-size:18px}
 .menubar{background:#1b5e20;padding:12px 5px;position:sticky;top:0;z-index:100;display:flex;justify-content:center;gap:5px;overflow-x:auto;white-space:nowrap}
 .menubar a{color:white;text-decoration:none;font-weight:bold;font-size:15px;padding:8px 14px;border-radius:20px;background:#2e7d32}
-.menubar a:hover{background:#43a047}</style>
+.menubar a:hover{background:#43a047}
+
+/* ===== SPLASH / INTRO PAGE ===== */
+#splash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(#e8f5e9,#ffffff);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:15px;box-sizing:border-box}
+.top-row{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:380px}
+.top-row img{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #1b5e20;background:white}
+.top-slogan{flex:1;font-size:13px;font-weight:bold;color:#1b5e20;line-height:1.4;padding:0 8px}
+.club-name{font-size:23px;font-weight:bold;color:#1b5e20;margin:15px 0 5px;line-height:1.3}
+.profile-pic{width:110px;height:110px;border-radius:50%;object-fit:cover;border:3px solid #2e7d32;margin:10px 0}
+.splash-msg{background:white;padding:12px;border-radius:12px;max-width:350px;font-size:13px;color:#333;line-height:1.6;margin-top:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+#main{display:none}
+</style>
 </head>
 <body>
 
-<!-- উপরের Menu Bar -->
+<!-- ===== INTRO PAGE - 4 SEC THAKBE ===== -->
+<div id="splash">
+  <div class="top-row">
+    <img src="ansar.png" alt="Ansar Logo">
+    <div class="top-slogan">শান্তি-শৃঙ্খলা<br>উন্নয়ন নিরাপত্তায়<br>সর্বত্র আমরা</div>
+    <img src="club.png" alt="Club Logo">
+  </div>
+
+  <div class="club-name">আনসার ও ভিডিপি ক্লাব<br>পল্টন-ঢাকা</div>
+
+  <img src="ruhul.jpg" class="profile-pic" alt="Ruhul Amin">
+  <div><b style="font-size:19px">মোঃ রুহুল আমিন</b><br><span style="color:#555">পদবীঃ ওয়ার্ড দলনেতা</span><br><span style="color:#555;font-size:14px">মোবাইলঃ 01951-480434</span></div>
+
+  <div class="splash-msg">
+  শান্তি-শৃঙ্খলা উন্নয়ন নিরাপত্তায় সর্বত্র আমরা — এটা শুধু একটা স্লোগান নয়, এটা আমাদের প্রতিজ্ঞা। আনসার ও ভিডিপি ক্লাব পল্টন-ঢাকা সবসময় মানুষের পাশে থাকতে চায়।
+  </div>
+  <p style="font-size:12px;color:#888;margin-top:12px">লোড হচ্ছে... দয়া করে অপেক্ষা করুন</p>
+</div>
+
+<!-- ===== MAIN LOGIN PAGE ===== -->
+<div id="main">
 <div class="menubar">
 <a href="index.html">🏠 হোম</a>
 <a href="home.html">📋 ডিউটি</a>
@@ -30,7 +63,6 @@ button{width:95%;padding:12px;background:#2e7d32;color:white;border:none;border-
 <input id="pass" type="password" placeholder="পাসওয়ার্ড"><br>
 <button onclick="login()">লগইন</button><p id="msg" style="color:red"></p></div>
 
-<!-- Welcome Message -->
 <div id="welcome-box" style="display:none;background:white;padding:20px;border-radius:15px;max-width:350px;margin:auto;">
 <h3>আসসালামু আলাইকুম!</h3>
 <p>ধন্যবাদ, আপনার অ্যাকাউন্টে সফলভাবে লগইন হয়েছে।</p>
@@ -42,14 +74,19 @@ button{width:95%;padding:12px;background:#2e7d32;color:white;border:none;border-
 <p style="color:#666;font-size:14px;">৫ সেকেন্ডের মধ্যে হোম পেজে চলে যাবেন</p>
 </div>
 </div>
+</div>
 
 <script>
+// Splash 4 second pore login page dekhabe
+setTimeout(function(){
+  document.getElementById('splash').style.display="none";
+  document.getElementById('main').style.display="block";
+}, 4000);
+
 function login(){
 let u=document.getElementById('uid').value.trim();
 let p=document.getElementById('pass').value.trim();
-
 let users = {
-  "admin": "Paltan@2018",
   "admin": "Paltan@2018",
   "SAIMUN ISLAM": "46620",
   "NATASHA AKTER": "46626",
@@ -68,49 +105,7 @@ let users = {
   "SHANTAMONI": "123",
   "SUME AKTER": "18249",
   "KAKOLI AKTER": "46693",
-  "member20": "",
-  "member21": "",
-  "member22": "",
-  "member23": "",
-  "member24": "",
-  "member25": "",
-  "member26": "",
-  "member27": "",
-  "member28": "",
-  "member29": "",
-  "member30": "",
-  "member31": "",
-  "member32": "",
-  "member33": "",
-  "member34": "",
-  "member35": "",
-  "member36": "",
-  "member37": "",
-  "member38": "",
-  "member39": "",
-  "member40": "",
-  "member41": "",
-  "member42": "",
-  "member43": "",
-  "member44": "",
-  "member45": "",
-  "member46": "",
-  "member47": "",
-  "member48": "",
-  "member49": "",
-  "member50": "",
-  "member51": "",
-  "member52": "",
-  "member53": "",
-  "member54": "",
-  "member55": "",
-  "member56": "",
-  "member57": "",
-  "member58": "",
-  "member59": "",
-  "member60": "",
 };
-
 if(u in users && users[u]==p){
   document.getElementById('loginBox').style.display="none";
   document.getElementById('welcome-box').style.display="block";
@@ -119,13 +114,8 @@ if(u in users && users[u]==p){
   let banglaNum = ["০","১","২","৩","৪","৫"];
   let timer = setInterval(function(){
     sec--;
-    if(sec >= 0){
-      document.getElementById('countdown').innerText = banglaNum[sec];
-    }
-    if(sec <= 0){
-      clearInterval(timer);
-      window.location.href="home.html";
-    }
+    if(sec >= 0){ document.getElementById('countdown').innerText = banglaNum[sec]; }
+    if(sec <= 0){ clearInterval(timer); window.location.href="home.html"; }
   }, 1000);
 }
 else{ document.getElementById('msg').innerText="ভুল আইডি বা পাসওয়ার্ড!"; }
