@@ -22,6 +22,10 @@ button{width:95%;padding:12px;background:#2e7d32;color:white;border:none;border-
 <p>ধন্যবাদ, আপনার অ্যাকাউন্টে সফলভাবে লগইন হয়েছে।</p>
 <p>আনসার ভিডিপি ক্লাব, পল্টন-এ আপনাকে স্বাগতম।<br>
 আপনার ডিউটি এবং সকল আপডেট এখান থেকেই দেখতে পারবেন।</p>
+<hr>
+<p style="color:#2e7d32;font-weight:bold;">অপেক্ষা করুন, আপনাকে হোম পেজে নিয়ে যাওয়া হচ্ছে...</p>
+<p style="font-size:28px;font-weight:bold;color:#1b5e20;" id="countdown">৫</p>
+<p style="color:#666;font-size:14px;">৫ সেকেন্ডের মধ্যে হোম পেজে চলে যাবেন</p>
 </div>
 
 <script>
@@ -85,7 +89,21 @@ let users = {
 if(users[u] && users[u]==p){
   document.getElementById('loginBox').style.display="none";
   document.getElementById('welcome-box').style.display="block";
-  setTimeout(function(){ window.location.href="home.html"; }, 5000);
+
+  let sec = 5;
+  document.getElementById('countdown').innerText = "৫";
+  let banglaNum = ["০","১","২","৩","৪","৫"];
+  let timer = setInterval(function(){
+    sec--;
+    if(sec >= 0){
+      document.getElementById('countdown').innerText = banglaNum[sec];
+    }
+    if(sec <= 0){
+      clearInterval(timer);
+      window.location.href="home.html";
+    }
+  }, 1000);
+
 }
 else{ document.getElementById('msg').innerText="ভুল আইডি বা পাসওয়ার্ড!"; }
 }
