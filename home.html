@@ -49,6 +49,7 @@ h2{text-align:center;color:#0b5e2e;margin-bottom:15px}
 .pay-card{padding:15px;border-radius:12px;color:#fff}
 .pay-bkash{background:#e2136e}
 .pay-nagad{background:#f6921e}
+.pay-rocket{background:#8C3494}
 .pay-card b{font-size:18px}
 .pay-card p{font-size:20px;font-weight:bold;margin-top:5px;letter-spacing:1px}
 .trx-input{width:100%;padding:10px;border:none;border-radius:20px;margin-top:8px;text-align:center;font-size:14px;outline:none;background:#fff;color:#333}
@@ -57,12 +58,18 @@ h2{text-align:center;color:#0b5e2e;margin-bottom:15px}
 .trx-msg{font-size:13px;margin-top:8px;font-weight:bold;min-height:18px}
 .donate-list{background:#fff;border:1px solid #ffc107;border-radius:15px;padding:15px;margin-top:15px;text-align:left}
 .donate-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.donate-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.12);text-align:center;padding-bottom:8px;border:1px solid #eee}
+.donate-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.12);text-align:center;padding-bottom:8px;border:1px solid #eee;position:relative}
 .donate-card img{width:100%;height:100px;object-fit:cover}
 .donate-card b{color:#0b5e2e;font-size:13px;display:block;margin-top:5px}
 .donate-card p{font-size:11px;color:#666;margin:2px 0}
 .donate-amt{background:#e91e63;color:#fff;display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:bold;margin-top:4px}
 .total-box{background:#0b5e2e;color:#fff;padding:12px;border-radius:10px;text-align:center;font-weight:bold;margin-top:10px}
+.verify-badge{background:#0b5e2e;color:#fff;font-size:11px;padding:3px 8px;border-radius:20px;display:inline-block;margin-top:4px}
+.pending-badge{background:#ff9800;color:#fff;font-size:11px;padding:3px 8px;border-radius:20px;display:inline-block;margin-top:4px}
+.verify-btn{background:#0b5e2e;color:#fff;border:none;padding:7px 10px;border-radius:20px;font-size:12px;font-weight:bold;cursor:pointer;margin:4px 2px}
+.reject-btn{background:#fff;color:#c62828;border:1px solid #c62828;padding:7px 10px;border-radius:20px;font-size:12px;font-weight:bold;cursor:pointer;margin:4px 2px}
+.admin-box{background:#f8f9fa;border:1px dashed #0b5e2e;border-radius:12px;padding:12px;margin-top:15px}
+.admin-input{width:100%;padding:10px;border:2px solid #0b5e2e;border-radius:10px;text-align:center;margin-top:8px}
 .contact{background:#fff;padding:25px;border-radius:15px;text-align:center;margin-top:25px;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
 .contact .post{color:#0b5e2e;font-weight:bold;font-size:19px;margin-bottom:20px}
 .social{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
@@ -110,9 +117,11 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <div class="notice-item">📅 <b>সাপ্তাহিক মিটিং:</b> প্রতি শুক্রবার সকাল ৯ টায় ক্লাব অফিসে মিটিং হবে। সকল সদস্যকে উপস্থিত থাকার অনুরোধ করা হলো।</div>
 <div class="notice-item">📅 <b>নতুন সদস্য ভর্তি চলছে:</b> আগ্রহীরা নিচের ফরম পূরণ করুন।</div>
 </div>
+
+<!-- ✅ UNIQUE ONUDAN GHOR - SUDHU EITUKU CHANGE -->
 <div class="donate-box">
 <h2>❤️ ক্লাবে অনুদান পাঠান</h2>
-<p style="color:#555;margin-top:5px;">নিচের যেকোনো একটা নাম্বারে Send Money করুন, তারপর নাম + টাকা + TrxID + ছবি দিয়ে Submit করুন।</p>
+<p style="color:#555;margin-top:5px;">নিচের যেকোনো একটা নাম্বারে Send Money করুন, তারপর নাম + টাকা + TrxID + ছবি দিয়ে Submit করুন। Payment Verified হলেই অটো আপডেট হবে।</p>
 <div class="pay-grid">
 <div class="pay-card pay-bkash"><b>📱 বিকাশ (Send Money)</b><p>01951480434</p><span>মোঃ রুহুল আমিন</span>
 <input class="trx-input" id="bkashName" placeholder="আপনার নাম লিখুন">
@@ -130,16 +139,44 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <button class="trx-btn" onclick="submitTrx('nagad')">✅ Submit</button>
 <p class="trx-msg" id="nagadMsg"></p>
 </div>
+<div class="pay-card pay-rocket"><b>🚀 রকেট (Send Money)</b><p>01951480434</p><span>মোঃ রুহুল আমিন</span>
+<input class="trx-input" id="rocketName" placeholder="আপনার নাম লিখুন">
+<input class="trx-input" id="rocketAmount" type="number" placeholder="টাকার পরিমাণ - যেমন: 500">
+<input class="trx-input" id="rocketTrx" placeholder="রকেট TrxID লিখুন">
+<input class="trx-file" id="rocketPhoto" type="file" accept="image/*">
+<button class="trx-btn" onclick="submitTrx('rocket')">✅ Submit</button>
+<p class="trx-msg" id="rocketMsg"></p>
 </div>
+</div>
+
 <div class="donate-list">
-<h2 style="font-size:18px;">❤️ সাম্প্রতিক অনুদান</h2>
+<h2 style="font-size:18px;">✅ Verified অনুদান</h2>
+<p style="font-size:13px;color:#666;">শুধু Verified অনুদান এখানে দেখাবে।</p>
 <div class="donate-grid" id="donationList">
-<div class="donate-card"><img src="https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg"><b>মোঃ রুহুল আমিন</b><p>বিকাশ • TrxID: 9AB1234567</p><span class="donate-amt">৫০০ টাকা</span></div>
-<div class="donate-card"><img src="https://i.ibb.co.com/Kp1HfdZ5/Whats-App-Image-2026-11-20-at-4-02-20-PM.jpg"><b>করবী জাহান কনা</b><p>নগদ • TrxID: 8CD1234567</p><span class="donate-amt">৩০০ টাকা</span></div>
+<div class="donate-card"><img src="https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg"><b>মোঃ রুহুল আমিন</b><p>বিকাশ • TrxID: 9AB1234567</p><span class="donate-amt">৫০০ টাকা</span><br><span class="verify-badge">✅ Payment Verified</span></div>
+<div class="donate-card"><img src="https://i.ibb.co.com/Kp1HfdZ5/Whats-App-Image-2026-11-20-at-4-02-20-PM.jpg"><b>করবী জাহান কনা</b><p>নগদ • TrxID: 8CD1234567</p><span class="donate-amt">৩০০ টাকা</span><br><span class="verify-badge">✅ Payment Verified</span></div>
 </div>
-<div class="total-box">মোট অনুদান <span id="totalDonation">লোড হচ্ছে...</span></div>
+<div id="verifiedList"></div>
+<div class="total-box">মোট Verified অনুদান <span id="totalDonation">লোড হচ্ছে...</span></div>
+</div>
+
+<div class="donate-list" style="border-color:#ff9800;">
+<h2 style="font-size:18px;color:#ff9800;">⏳ Pending অনুদান - যাচাই চলছে</h2>
+<div class="donate-grid" id="pendingList"><p style="font-size:13px;color:#888;">এখনো কোনো Pending অনুদান নেই।</p></div>
+<div class="admin-box">
+<b>🔐 শুধু দলনেতার জন্য - Admin Verify</b>
+<p style="font-size:13px;color:#666;">Pending দেখতে ও Verify করতে নিচে Admin Password দিন</p>
+<input class="admin-input" id="adminPass" type="password" placeholder="Admin Password দিন">
+<button class="login-btn" onclick="unlockAdmin()">🔓 Admin Panel খুলুন</button>
+<p id="adminMsg" style="font-size:13px;color:red;font-weight:bold;"></p>
+<div id="adminControls" style="display:none;">
+<p style="font-size:13px;color:#0b5e2e;font-weight:bold;">✅ Admin চালু আছে - এখন Pending থেকে Verify / Reject করতে পারবেন</p>
 </div>
 </div>
+</div>
+</div>
+<!-- ✅ ONUDAN GHOR SES -->
+
 <button class="members-btn" onclick="showMembers()">👥 আমাদের সদস্যবৃন্দ দেখুন <span>৫০ জন সদস্যের প্রোফাইল দেখতে এখানে ক্লিক করুন →</span></button>
 <button class="login-home-btn" onclick="openGeneralLogin()">🔐 সদস্য লগইন / Sign In <span>আপনার ID + Password দিয়ে সরাসরি আপনার প্রোফাইল দেখুন →</span></button>
 <div class="notice"><h2>সদস্য হতে চান?</h2><p>নিচের বাটনে ক্লিক করে ফরম পূরণ করুন।</p><br><a class="btn" href="https://forms.gle/TRygmtZUUFGPggzp6">এখনই আবেদন করুন</a></div>
@@ -232,7 +269,7 @@ footer{background:#222;color:#fff;text-align:center;padding:20px;margin-top:30px
 <div class="modal-content"><span class="close" onclick="closeLogin()">×</span><h2 id="loginName" style="margin-top:10px;"></h2><p style="color:#666;font-size:14px;margin:5px 0;">প্রোফাইল দেখতে ID ও Password দিন</p><input class="login-input" id="inputId" placeholder="আপনার ID দিন - যেমন: 01"><input class="login-input" id="inputPass" type="password" placeholder="Password দিন"><p id="loginError" style="color:red;font-size:14px;display:none;">❌ ভুল ID / Password!</p><button class="login-btn" onclick="checkLogin()">🔓 প্রোফাইল খুলুন</button><p style="margin-top:10px;color:#999;font-size:12px;">ID / Password ভুলে গেলে দলনেতার সাথে যোগাযোগ করুন</p></div>
 </div>
 <div class="modal" id="profileModal" onclick="if(event.target==this) closeModal()">
-<div class="modal-content"><span class="close" onclick="closeModal()">×</span><img id="mImg" src=""><h2 id="mName" style="margin-top:10px;"></h2><div class="badge" id="mPost"></div><p id="mIdMobile" style="font-size:14px;margin-top:5px;color:#333"></p><div class="grid2"><div>📅 <b>এই মাসে ডিউটি</b><br><span id="mDuty"></span></div><div>📅 <b>এই বছরে মোট ডিউটি</b><br><span id="mYearDuty"></span></div><div>💰 <b>ভাতা পেয়েছি</b><br><span id="mVata"></span></div><div>❤️ <b>ক্লাবে অনুদান</b><br><span id="mOnudan"></span></div><div>⏳ <b>আরো ভাতা পাবো</b><br><span id="mPabo"></span></div><div>📊 <b>বাৎসরিক আয়</b><br><span id="mYearAy"></span></div><div>🎁 <b>বাৎসরিক অনুদান</b><br><span id="mYearOnudan"></span></div></div><p style="margin-top:15px;color:#666;font-size:13px;">প্রোফাইল বন্ধ করতে × চাপ দিন</p></div>
+<div class="modal-content"><span class="close" onclick="closeModal()">×</span><img id="mImg" src=""><h2 id="mName" style="margin-top:10px;"></h2><div class="badge" id="mPost"></div><p id="mIdMobile" style="font-size:14px;color:#333"></p><div class="grid2"><div>📅 <b>এই মাসে ডিউটি</b><br><span id="mDuty"></span></div><div>📅 <b>এই বছরে মোট ডিউটি</b><br><span id="mYearDuty"></span></div><div>💰 <b>ভাতা পেয়েছি</b><br><span id="mVata"></span></div><div>❤️ <b>ক্লাবে অনুদান</b><br><span id="mOnudan"></span></div><div>⏳ <b>আরো ভাতা পাবো</b><br><span id="mPabo"></span></div><div>📊 <b>বাৎসরিক আয়</b><br><span id="mYearAy"></span></div><div>🎁 <b>বাৎসরিক অনুদান</b><br><span id="mYearOnudan"></span></div></div><p style="margin-top:15px;color:#666;font-size:13px;">প্রোফাইল বন্ধ করতে × চাপ দিন</p></div>
 </div>
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbws4aKM9dle8z5WfSLiQ1yhCTVGRjWwGMwI5vnYSjg88wXM--MmtQjPJ1PWi8itGIfYIQ/exec";
@@ -253,33 +290,74 @@ function togglePanel(id){
 }
 function showMembers(){ document.getElementById('homePage').style.display='none'; document.getElementById('membersPage').style.display='block'; document.getElementById('dashboardPage').style.display='none'; document.getElementById('editPage').style.display='none'; window.scrollTo(0,0); }
 function showHome(){ document.getElementById('membersPage').style.display='none'; document.getElementById('dashboardPage').style.display='none'; document.getElementById('editPage').style.display='none'; document.getElementById('homePage').style.display='block'; window.scrollTo(0,0); }
-function submitTrx(type){
-var nameId = type==='bkash' ? 'bkashName' : 'nagadName';
-var amtId = type==='bkash' ? 'bkashAmount' : 'nagadAmount';
-var trxId = type==='bkash' ? 'bkashTrx' : 'nagadTrx';
-var photoId = type==='bkash' ? 'bkashPhoto' : 'nagadPhoto';
-var msgId = type==='bkash' ? 'bkashMsg' : 'nagadMsg';
-var name = document.getElementById(nameId).value.trim();
-var amt = document.getElementById(amtId).value.trim();
-var trx = document.getElementById(trxId).value.trim();
-var file = document.getElementById(photoId).files[0];
-var msg = document.getElementById(msgId);
-if(name==="" || amt==="" || trx===""){ msg.innerText="⚠️ নাম + টাকা + TrxID ৩টাই লিখুন"; return; }
-if(!file){ msg.innerText="⚠️ গ্যালারি থেকে একটা ছবি বেছে নিন"; return; }
-var label = type==='bkash' ? 'বিকাশ' : 'নগদ';
-msg.innerText="⏳ পাঠানো হচ্ছে...";
-var reader = new FileReader();
-reader.onload = function(e){
-var div = document.createElement('div');
-div.className='donate-card';
-div.innerHTML='<img src="'+e.target.result+'"><b>'+name+'</b><p>'+label+' • TrxID: '+trx+'</p><span class="donate-amt">'+amt+' টাকা</span>';
-document.getElementById('donationList').prepend(div);
-msg.innerText="✅ ধন্যবাদ "+name+"! আপনার অনুদান লিস্টে যোগ হয়েছে।";
-document.getElementById(nameId).value=""; document.getElementById(amtId).value=""; document.getElementById(trxId).value=""; document.getElementById(photoId).value="";
-fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:'name='+encodeURIComponent(name)+'&amount='+encodeURIComponent(amt)+'&trx='+encodeURIComponent(trx)+'&type='+encodeURIComponent(label)}).catch(function(){});
-};
-reader.readAsDataURL(file);
+
+// ===== UNIQUE ONUDAN + VERIFIED SYSTEM - SUDHU EITUKU NOTUN =====
+var isAdmin = false;
+var ADMIN_PASS = "Paltan@2018";
+var verifiedDonations = JSON.parse(localStorage.getItem('avcp_verified')||'[]');
+var pendingDonations = JSON.parse(localStorage.getItem('avcp_pending')||'[]');
+function saveDonations(){
+  localStorage.setItem('avcp_verified', JSON.stringify(verifiedDonations));
+  localStorage.setItem('avcp_pending', JSON.stringify(pendingDonations));
 }
+function renderDonations(){
+  var vHtml = "";
+  for(var i=0;i<verifiedDonations.length;i++){
+    var d=verifiedDonations[i];
+    vHtml+='<div class="donate-card"><img src="'+d.photo+'"><b>'+d.name+'</b><p>'+d.label+' • TrxID: '+d.trx+'</p><span class="donate-amt">'+d.amount+' টাকা</span><br><span class="verify-badge">✅ Payment Verified</span></div>';
+  }
+  document.getElementById('verifiedList').innerHTML = vHtml ? '<div class="donate-grid">'+vHtml+'</div>' : '';
+  var pHtml = "";
+  for(var j=0;j<pendingDonations.length;j++){
+    var p=pendingDonations[j];
+    var btns = isAdmin ? '<br><button class="verify-btn" onclick="verifyDonation('+j+')">✅ Verify</button><button class="reject-btn" onclick="rejectDonation('+j+')">❌ Reject</button>' : '<br><span class="pending-badge">⏳ যাচাই চলছে</span>';
+    pHtml+='<div class="donate-card"><img src="'+p.photo+'"><b>'+p.name+'</b><p>'+p.label+' • TrxID: '+p.trx+'</p><span class="donate-amt">'+p.amount+' টাকা</span>'+btns+'</div>';
+  }
+  document.getElementById('pendingList').innerHTML = pHtml ? '<div class="donate-grid">'+pHtml+'</div>' : '<p style="font-size:13px;color:#888;">এখনো কোনো Pending অনুদান নেই।</p>';
+  var total = 800;
+  for(var k=0;k<verifiedDonations.length;k++){ total += parseInt(verifiedDonations[k].amount)||0; }
+  document.getElementById('totalDonation').innerText = total + " টাকা (Verified)";
+}
+function unlockAdmin(){
+  var p=document.getElementById('adminPass').value.trim();
+  if(p===ADMIN_PASS){ isAdmin=true; document.getElementById('adminControls').style.display='block'; document.getElementById('adminMsg').style.color='#0b5e2e'; document.getElementById('adminMsg').innerText='✅ Admin চালু হয়ে গেছে'; renderDonations(); }
+  else { document.getElementById('adminMsg').innerText='❌ ভুল Password!'; }
+}
+function verifyDonation(idx){
+  if(!isAdmin){ alert('আগে Admin Password দিন'); return; }
+  var item = pendingDonations.splice(idx,1)[0];
+  verifiedDonations.unshift(item);
+  saveDonations(); renderDonations();
+  alert('✅ Verified! '+item.name+' এর অনুদান Verified List এ অটো আপডেট হয়ে গেছে');
+}
+function rejectDonation(idx){
+  if(!isAdmin) return;
+  if(!confirm('Reject করবেন?')) return;
+  pendingDonations.splice(idx,1); saveDonations(); renderDonations();
+}
+function submitTrx(type){
+  var map={bkash:{n:'bkashName',a:'bkashAmount',t:'bkashTrx',p:'bkashPhoto',m:'bkashMsg',l:'বিকাশ'},nagad:{n:'nagadName',a:'nagadAmount',t:'nagadTrx',p:'nagadPhoto',m:'nagadMsg',l:'নগদ'},rocket:{n:'rocketName',a:'rocketAmount',t:'rocketTrx',p:'rocketPhoto',m:'rocketMsg',l:'রকেট'}};
+  var c=map[type];
+  var name=document.getElementById(c.n).value.trim();
+  var amt=document.getElementById(c.a).value.trim();
+  var trx=document.getElementById(c.t).value.trim();
+  var file=document.getElementById(c.p).files[0];
+  var msg=document.getElementById(c.m);
+  if(name==="" || amt==="" || trx===""){ msg.innerText="⚠️ নাম + টাকা + TrxID ৩টাই লিখুন"; return; }
+  if(!file){ msg.innerText="⚠️ গ্যালারি থেকে একটা ছবি বেছে নিন"; return; }
+  msg.innerText="⏳ পাঠানো হচ্ছে...";
+  var reader=new FileReader();
+  reader.onload=function(e){
+    pendingDonations.unshift({name:name,amount:amt,trx:trx,label:c.l,photo:e.target.result});
+    saveDonations(); renderDonations();
+    msg.innerText="✅ ধন্যবাদ "+name+"! আপনার অনুদান Pending এ গেছে, Verified হলেই অটো আপডেট হবে।";
+    document.getElementById(c.n).value=""; document.getElementById(c.a).value=""; document.getElementById(c.t).value=""; document.getElementById(c.p).value="";
+    fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'name='+encodeURIComponent(name)+'&amount='+encodeURIComponent(amt)+'&trx='+encodeURIComponent(trx)+'&type='+encodeURIComponent(c.l)}).catch(function(){});
+  };
+  reader.readAsDataURL(file);
+}
+renderDonations();
+
 var membersData = [
 {name:"১. মোঃ রুহুল আমিন",post:"ওয়ার্ড দলনেতা",id:"26296",mobile:"01951480434",pass:"Paltan@2018",img:"https://i.ibb.co.com/5xht3sjg/WhatsApp-Image-2026-11-18-at-11-52-36-PM.jpg",duty:"০৫দিন",yearDuty:"৮৯দিন",vata:"000টাকা",onudan:"১,২২0টাকা",pabo:"৫,000টাকা",yearAy:"৬৯১৯0টাকা",yearOnudan:"13650টাকা",father:"",mother:"",address:"",blood:"",nid:"",bkash:"",edu:"",photo:"",nidFront:"",nidBack:"",cert10:"",cert14:"",cert28:""},
 {name:"২. করবী জাহান কনা",post:"ওয়ার্ড দলনেত্রী",id:"78646",mobile:"01620-437492",pass:"Paltan@2018",img:"https://i.ibb.co.com/Kp1HfdZ5/Whats-App-Image-2026-11-20-at-4-02-20-PM.jpg",duty:"০৫ দিন",yearDuty:"২৬ দিন",vata:"000 টাকা",onudan:"১,২০০টাকা",pabo:"৫,০০০টাকা",yearAy:"১৮,৩৭৫টাকা",yearOnudan:"১,২০০টাকা",father:"",mother:"",address:"",blood:"",nid:"",bkash:"",edu:"",photo:"",nidFront:"",nidBack:"",cert10:"",cert14:"",cert28:""},
@@ -364,7 +442,6 @@ function checkGeneralLogin(){ var id=document.getElementById('generalId').value.
 function showProfile(i){ var m=membersData[i]; document.getElementById('mImg').src=m.img; document.getElementById('mName').innerText=m.name; document.getElementById('mPost').innerText=m.post; document.getElementById('mIdMobile').innerText='ID: '+m.id+' | মোবাইল: '+m.mobile; document.getElementById('mDuty').innerText=m.duty; document.getElementById('mYearDuty').innerText=m.yearDuty; document.getElementById('mVata').innerText=m.vata; document.getElementById('mOnudan').innerText=m.onudan; document.getElementById('mPabo').innerText=m.pabo; document.getElementById('mYearAy').innerText=m.yearAy; document.getElementById('mYearOnudan').innerText=m.yearOnudan; document.getElementById('profileModal').style.display='block'; }
 function closeModal(){ document.getElementById('profileModal').style.display='none'; }
 function loadTotal(){ fetch(SCRIPT_URL).then(res => res.json()).then(data => { document.getElementById("totalDonation").innerText = data.total + " টাকা"; }); }
-loadTotal();
 function showVal(v){ return (v && v.trim()!=="") ? v : "— এখনো দেওয়া হয়নি"; }
 function showImg(v){ return (v && v!=="") ? '<img src="'+v+'">' : '<p style="color:#999;font-size:13px;">— এখনো ছবি দেওয়া হয়নি</p>'; }
 function openDashboard(i){
